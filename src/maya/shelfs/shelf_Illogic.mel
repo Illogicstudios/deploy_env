@@ -1,0 +1,110 @@
+global proc shelf_Illogic () {
+    global string $gBuffStr;
+    global string $gBuffStr0;
+    global string $gBuffStr1;
+
+
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "import maya.mel as mel\nimport maya.cmds as cmds\n\nlibDir = mel.eval('$s=`getenv \"LIB_DIR\"`;')\n\ncmds.file( 'R:/lib/3d/studio/studio.mb', r=True )\n#cmds.file( 'R:/lib/3d/studio/studio.mb', rr=True )" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "import maya.mel as mel\nimport maya.cmds as cmds\n\nlibDir = mel.ev..." 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "R:/pipeline/pipe/maya/icons/on.png" 
+        -image1 "R:/pipeline/pipe/maya/icons/on.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "import maya.mel as mel\nimport maya.cmds as cmds\n\nlibDir = mel.eval('$s=`getenv \"LIB_DIR\"`;')\n\ncmds.file( libDir+'/3d/studio/studio.mb', r=True )" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "import maya.mel as mel\nimport maya.cmds as cmds\n\nlibDir = mel.eval('$s=`getenv \"LIB_DIR\"`;')\n\n#cmds.file( libDir+'/3d/studio/studio.mb', r=True )\ncmds.file( libDir+'/3d/studio/studio.mb', rr=True )" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "import maya.mel as mel\nimport maya.cmds as cmds\n\nlibDir = mel.ev..." 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "R:/pipeline/pipe/maya/icons/offstudio.png" 
+        -image1 "R:/pipeline/pipe/maya/icons/offstudio.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "import maya.mel as mel\nimport maya.cmds as cmds\n\nlibDir = mel.eval('$s=`getenv \"LIB_DIR\"`;')\n\ncmds.file( libDir+'/3d/studio/studio.mb', rr=True )" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "import sys\n\ninstall_dir = 'R:/pipeline/pipe/maya/scripts/shader_maker'\nif not sys.path.__contains__(install_dir):\n    sys.path.append(install_dir)\n\nimport ShaderMaker\nfrom ShaderMaker import *\n\nunload_packages(silent=True, packages=[\"ShaderMaker\", \"Shader\"])\nltp = ShaderMaker()\nltp.show()\n" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "import sys\n\ninstall_dir = 'R:/pipeline/pipe/maya/scripts/shader_..." 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "R:/pipeline/pipe/maya/icons/shader_maker.png" 
+        -image1 "R:/pipeline/pipe/maya/icons/shader_maker.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "import sys\n\nimport ShaderMaker\nfrom ShaderMaker import *\n\nunload_packages(silent=True, packages=[\"ShaderMaker\", \"Shader\"])\nltp = ShaderMaker()\nltp.show()\n" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+
+} 

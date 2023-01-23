@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ColorManagement version="1.5">
+    <Parameter name="OCIOConfigFile" value="R:/pipeline/networkInstall/OpenColorIO-Configs/aces_1.2/config.ocio" />
+    <Parameter name="OCIORulesEnabled" value="false" />
+    <Parameter name="applyPlayblastOutputTransform" value="true" />
+    <Parameter name="isApplyOutputTransformEnabled" value="false" />
+    <Parameter name="isCMEnabled" value="true" />
+    <Parameter name="isOCIOEnabled" value="true" />
+    <Parameter name="outputTransform" value="sRGB (ACES)" />
+    <Parameter name="outputTransformUseColorConversion" value="false" />
+    <Parameter name="outputTransformUseViewTransform" value="true" />
+    <Parameter name="playblastOutputTransform" value="sRGB (ACES)" />
+    <Parameter name="playblastOutputTransformUseColorConversion" value="false" />
+    <Parameter name="playblastOutputTransformUseViewTransform" value="true" />
+    <Parameter name="renderingSpace" value="ACES - ACEScg" />
+    <Parameter name="userRules" value='&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;rules version=&quot;1.0&quot;&gt;&#x09;&lt;default colorSpace=&quot;Utility - sRGB - Texture&quot;/&gt;&#x09;&lt;FilePathRule name=&quot;hdr&quot; extension=&quot;*&quot; pattern=&quot;*hdr*&quot; colorSpace=&quot;Utility - Linear - sRGB&quot; /&gt;&#x09;&lt;FilePathRule name=&quot;Normal&quot; extension=&quot;*&quot; pattern=&quot;*Normal*&quot; colorSpace=&quot;Utility - Raw&quot; /&gt;&#x09;&lt;FilePathRule name=&quot;Displacement&quot; extension=&quot;*&quot; pattern=&quot;*Displacement*&quot; colorSpace=&quot;Utility - Raw&quot; /&gt;&#x09;&lt;FilePathRule name=&quot;Roughness&quot; extension=&quot;*&quot; pattern=&quot;*Roughness*&quot; colorSpace=&quot;Utility - Raw&quot; /&gt;&#x09;&lt;FilePathRule name=&quot;Opacity&quot; extension=&quot;*&quot; pattern=&quot;*Opacity*&quot; colorSpace=&quot;Utility - Raw&quot; /&gt;&#x09;&lt;FilePathRule name=&quot;Bump&quot; extension=&quot;*&quot; pattern=&quot;*Bump*&quot; colorSpace=&quot;Utility - sRGB - Texture&quot; /&gt;&#x09;&lt;FilePathRule name=&quot;Gloss&quot; extension=&quot;*&quot; pattern=&quot;*Gloss*&quot; colorSpace=&quot;Utility - Raw&quot; /&gt;&lt;/rules&gt;' />
+    <Parameter name="userTransformPath" value="R:\pipeline\networkInstall\OpenColorIO-Configs\synColor\Shared" />
+    <Parameter name="viewTransform" value="sRGB (ACES)" />
+</ColorManagement>
