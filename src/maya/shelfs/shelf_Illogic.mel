@@ -101,7 +101,7 @@ global proc shelf_Illogic () {
         -style "iconOnly" 
         -marginWidth 1
         -marginHeight 1
-        -command "import sys\n\nimport ShaderMaker\nfrom ShaderMaker import *\n\nunload_packages(silent=True, packages=[\"ShaderMaker\", \"Shader\"])\nltp = ShaderMaker()\nltp.show()\n" 
+        -command "import sys\n\nimport ShaderMaker\nfrom ShaderMaker import *\n\nunload_packages(silent=True, packages=[\"ShaderMaker\", \"Shader\", \"IdealFlowLayout\"])\nltp = ShaderMaker()\nltp.show()\n" 
         -sourceType "python" 
         -commandRepeatable 1
         -flat 1
