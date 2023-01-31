@@ -96,12 +96,12 @@ global proc shelf_Illogic () {
         -font "plainLabelFont" 
         -overlayLabelColor 0.8 0.8 0.8 
         -overlayLabelBackColor 0 0 0 0.5 
-        -image "R:/pipeline/pipe/maya/icons/shader_maker.png" 
-        -image1 "R:/pipeline/pipe/maya/icons/shader_maker.png" 
+        -image "C:/Users/m.jenin/Documents/marius/deploy_env/src/maya/icons/shader_maker.png" 
+        -image1 "C:/Users/m.jenin/Documents/marius/deploy_env/src/maya/icons/shader_maker.png" 
         -style "iconOnly" 
         -marginWidth 1
         -marginHeight 1
-        -command "import sys\n\nimport ShaderMaker\nfrom ShaderMaker import *\n\nunload_packages(silent=True, packages=[\"ShaderMaker\", \"Shader\", \"IdealFlowLayout\"])\nltp = ShaderMaker()\nltp.show()\n" 
+        -command "import sys\n\nimport ShaderMaker\nfrom ShaderMaker import *\n\nunload_packages(silent=True, packages=[\"ShaderMaker\", \"Shader\", \"IdealFlowLayout\"])\napp = ShaderMaker()\napp.show()\n" 
         -sourceType "python" 
         -commandRepeatable 1
         -flat 1
