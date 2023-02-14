@@ -101,7 +101,41 @@ global proc shelf_Illogic () {
         -style "iconOnly" 
         -marginWidth 1
         -marginHeight 1
-        -command "import sys\n\nimport ShaderMaker\nfrom ShaderMaker import *\n\nunload_packages(silent=True, packages=[\"ShaderMaker\", \"Shader\", \"IdealFlowLayout\"])\napp = ShaderMaker()\napp.show()\n" 
+        -command "import ShaderMaker\nfrom ShaderMaker import *\nunload_packages(silent=True, packages=[\"ShaderMaker\", \"Shader\", \"IdealFlowLayout\",\"Prefs\"])\n\ntry:\n    shader_maker.close()\nexcept:\n    pass\nshader_maker = ShaderMaker()\nshader_maker.show()\n" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "BOB" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "import sys\nimport importlib\n\ninstall_dir = \"R:/pipeline/pipe/may..." 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.5 
+        -image "C:/Users/m.jenin/Documents/marius/deploy_env/src/maya/icons/bob.png" 
+        -image1 "C:/Users/m.jenin/Documents/marius/deploy_env/src/maya/icons/bob.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "import sys\nimport importlib\n\nmodules = [\n    \"BobApp\",\n    \"utils\",\n    \"Prefs\",\n    \"BobElement\",\n    \"BobCategory\",\n    \"BobTool\",\n    \"BobCollapsibleWidget\",\n    # Tool Models\n    \"tool_models.ActionTool\",\n    \"tool_models.MultipleActionTool\",\n    \"tool_models.RoutineTool\",\n    # Tool Instance Templates\n    \"tool_instances.ActionTemplateTool\",\n    \"tool_instances.MultipleActionTemplateTool\",\n    \"tool_instances.RoutineTemplateTool\",\n    # Tool Instances\n    \"tool_instances.LockTool\",\n    \"tool_instances.CleanFreezeTool\",\n    \"tool_instances.CleanerTool\",\n    \"tool_instances.TextureCheckTool\",\n]\n\nfrom utils import *\nunload_packages(silent=True, packages=modules)\n\nfor module in modules:\n    importlib.import_module(module)\n\nfrom BobApp import *\n\ntry:\n    bob.close()\nexcept:\n    pass\nbob = BobApp()\nbob.show()\n" 
         -sourceType "python" 
         -commandRepeatable 1
         -flat 1
