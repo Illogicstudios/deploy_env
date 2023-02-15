@@ -11,7 +11,7 @@ SET MAYA_SHELF_PATH=%ILLOGIC_DIR_MAYA%\shelfs
 SET XBMLANGPATH=%ILLOGIC_DIR_MAYA%\icons\startup_image;%ILLOGIC_DIR_MAYA%\icons
 
 rem \---- Scripts
-SET PYTHONPATH=%PYTHONPATH%;%SCRIPT_MAYA%\bug_out_bag;%SCRIPT_MAYA%\shader_maker;%SCRIPT_MAYA%\aov_manager;%NETWORK_INSTALL%\script;
+SET PYTHONPATH=%PYTHONPATH%;%SCRIPT_MAYA%\common;%SCRIPT_MAYA%\bug_out_bag;%SCRIPT_MAYA%\shader_maker;%SCRIPT_MAYA%\aov_manager;%NETWORK_INSTALL%\script;
 
 rem \---- Color
 SET MAYA_COLOR_MANAGEMENT_POLICY_FILE=%ILLOGIC_DIR_MAYA%\colorManagement\cm_aces2.0.xml
