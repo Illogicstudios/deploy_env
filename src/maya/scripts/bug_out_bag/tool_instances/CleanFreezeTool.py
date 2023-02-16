@@ -32,11 +32,14 @@ class CleanFreezeTool(ActionTool):
 
     def __center_pivot(self):
         for item in self.__selection:
-            xform(item["transform"], pivots=(0,0,0), worldSpace =True)
+            xform(item["transform"], pivots=(0, 0, 0), worldSpace=True)
 
     def __delete_history(self):
         for item in self.__selection:
-            delete(item["transform"].history(pruneDagObjects=True))
+            for history in item["transform"].history(pruneDagObjects=True):
+                if history != "initialShadingGroup":
+                    print(history)
+                    delete(history)
 
     def __retrieve_selection(self):
         selection = CleanFreezeTool.__get_transforms_selected()
