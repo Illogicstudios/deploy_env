@@ -224,14 +224,15 @@ class TextureCheckDialog(QDialog):
 
                 # Get the colorspace of the file node
                 colorspace = tex.colorSpace.get()
-                colorspace_corresp = None
+                colorspace_known = False
                 for colorspace_data in self.__known_cs:
                     if re.match(colorspace_data["name_regexp"], colorspace, re.IGNORECASE):
-                        colorspace_corresp = colorspace_data["name"]
+                        colorspace_known = True
+                        colorspace = colorspace_data["name"]
                         break
 
                 # Determine if the colorspace is known or not
-                if colorspace_corresp is None:
+                if not colorspace_known:
                     if colorspace not in bad_cs_tex[filepath]["unknown_colorspaces"]:
                         bad_cs_tex[filepath]["unknown_colorspaces"][colorspace] = []
                     bad_cs_tex[filepath]["unknown_colorspaces"][colorspace].append(tex)
