@@ -36,10 +36,7 @@ class CleanFreezeTool(ActionTool):
 
     def __delete_history(self):
         for item in self.__selection:
-            for history in item["transform"].history(pruneDagObjects=True):
-                if history != "initialShadingGroup":
-                    print(history)
-                    delete(history)
+            delete(item["transform"], constructionHistory =True)
 
     def __retrieve_selection(self):
         selection = CleanFreezeTool.__get_transforms_selected()
