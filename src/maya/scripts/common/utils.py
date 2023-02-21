@@ -1,4 +1,6 @@
+import math
 import sys
+from pymel.core import *
 
 
 # Clear a layout recusrively
@@ -90,8 +92,10 @@ def print_warning(msg, char_filler='-'):
         max_len_msg_line = max(max_len_msg_line, len(m))
     warning_filler = char_filler * int(2 * max_len_msg_line / 3 - 5 / 2)
     warning_msg = warning_filler + " /!\\ " + warning_filler
-    print(warning_msg)
+    warning(warning_msg)
     for m in msg:
-        warning_space_filler = ' ' * int((len(warning_msg) - len(m)) / 2)
-        print(warning_space_filler + m)
-    print(warning_msg + "\n")
+        float_length = (len(warning_msg) - len(m)) / 2
+        warning_space_filler = ' ' * int(float_length)
+        warning_space_filler2 = ' ' * math.ceil(float_length)
+        warning(warning_space_filler + m + warning_space_filler2)
+    warning(warning_msg)
