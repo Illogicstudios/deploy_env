@@ -2,8 +2,8 @@ from BobTool import *
 
 
 class ActionTool(BobTool, ABC):
-    def __init__(self, name, pref_name, description,tooltip="", button_text="Run"):
-        super().__init__(name, pref_name,tooltip)
+    def __init__(self, name, pref_name, description, tooltip="", button_text="Run"):
+        super().__init__(name, pref_name, tooltip)
         self.__description = description
         self.__button_text = button_text
         self._action_btn = None
@@ -28,7 +28,7 @@ class ActionTool(BobTool, ABC):
         content_layout.addLayout(hlyt)
 
         desc_lbl = QLabel(self.__description)
-        desc_lbl.setContentsMargins(5,0,0,0)
+        desc_lbl.setContentsMargins(5, 0, 0, 0)
         desc_lbl.setWordWrap(True)
         hlyt.addWidget(desc_lbl, 1)
 

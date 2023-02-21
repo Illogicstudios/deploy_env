@@ -69,16 +69,6 @@ _STYLESHEET_COLORSPACE_NOT_FOUND = {
 
 
 class TextureCheckTool(ActionTool):
-
-    # Launch the Dialog to check textures
-    def _action(self):
-        try:
-            self.__texture_check_dialog.hide()
-        except RuntimeError:
-            self.__texture_check_dialog = TextureCheckDialog(self)
-        self.__texture_check_dialog.show()
-        self.__texture_check_dialog.refresh_ui()
-
     def __init__(self):
 
         tooltip = "Check if File Nodes with same file have different colorspaces or" \
@@ -90,6 +80,18 @@ class TextureCheckTool(ActionTool):
         self.__dialog_opened = False
         self.__texture_check_dialog = TextureCheckDialog(self)
 
+    # Launch the Dialog to check textures
+    def _action(self):
+        try:
+            self.__texture_check_dialog.hide()
+        except RuntimeError:
+            self.__texture_check_dialog = TextureCheckDialog(self)
+        self.__texture_check_dialog.show()
+        self.__texture_check_dialog.refresh_ui()
+
+    def on_populate_done(self):
+        self.__refresh_btn()
+
     # setter of the state opened
     def set_opened(self, opened):
         self.__dialog_opened = opened
@@ -99,7 +101,7 @@ class TextureCheckTool(ActionTool):
     def __refresh_btn(self):
         self._action_btn.setEnabled(not self.__dialog_opened and len(ls(type="file")) > 0)
 
-    # Refresh the button on selectino changed
+    # Refresh the button on selection changed
     def on_selection_changed(self):
         self.__refresh_btn()
 

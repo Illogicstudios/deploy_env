@@ -1,5 +1,4 @@
-from PySide2 import QtWidgets, QtGui
-
+from PySide2 import QtWidgets, QtGui, QtCore
 
 class Header(QtWidgets.QWidget):
     """Header class for collapsible group"""
@@ -37,11 +36,10 @@ class Header(QtWidgets.QWidget):
         font = QtGui.QFont()
         font.setBold(True)
         label = QtWidgets.QLabel(name)
-        label.setWordWrap(True)
+        label.setSizePolicy(QtWidgets.QSizePolicy.Expanding,QtWidgets.QSizePolicy.Minimum)
         label.setFont(font)
 
         layout.addWidget(label)
-        layout.addItem(QtWidgets.QSpacerItem(0, 0, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding))
 
         stacked.addWidget(widget)
         stacked.addWidget(background)

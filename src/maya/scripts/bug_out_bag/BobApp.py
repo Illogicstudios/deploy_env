@@ -20,13 +20,12 @@ import utils
 from Prefs import *
 from BobCategory import *
 
-# from tool_instances.RoutineTemplateTool import *
-# from tool_instances.ActionTemplateTool import *
-# from tool_instances.MultipleActionTemplateTool import *
 from tool_instances.LockTool import *
 from tool_instances.CleanFreezeTool import *
 from tool_instances.CleanerTool import *
 from tool_instances.TextureCheckTool import *
+from tool_instances.ShaderTransfer import *
+from tool_instances.RestPosToVertexColorTool import *
 
 # ######################################################################################################################
 
@@ -55,6 +54,8 @@ class BobApp(QDialog):
                 CleanFreezeTool(),
                 CleanerTool(),
                 TextureCheckTool(),
+                ShaderTransfer(),
+                RestPosToVertexColorTool(),
             ])
         ]
         self.__selected_category = 0
