@@ -19,7 +19,6 @@ class CleanFreezeTool(ActionTool):
         self.__selection = []
 
     def _action(self):
-        self.__retrieve_selection()
         self.__unlock_selection()
         self.__delete_history()
         self.__freeze_transform()

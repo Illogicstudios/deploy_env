@@ -28,6 +28,7 @@ from tool_instances.ShaderTransfer import *
 from tool_instances.RestPosToVertexColorTool import *
 from tool_instances.DeleteOrigTool import *
 from tool_instances.UVCopierTool import *
+from tool_instances.ShapeRenamerTool import *
 
 # ######################################################################################################################
 
@@ -62,6 +63,7 @@ class BobApp(QDialog):
                 CleanerTool(),
                 TextureCheckTool(),
                 DeleteOrigTool(),
+                ShapeRenamerTool(),
             ]),
         ]
         self.__selected_category = 0

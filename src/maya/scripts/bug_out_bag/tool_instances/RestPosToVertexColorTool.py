@@ -19,21 +19,29 @@ class RestPosToVertexColorTool(ActionTool):
     def __init__(self):
         super().__init__(name="Rest Pos to Vertex Color", pref_name="rest_pos_to_vertex_color_tool",
                          description="Store rest position to the vertex color", button_text="Store")
+        self.__selection = []
 
     def _action(self):
-        sel = ls(sl=True)
-        for elem in listRelatives(sel, ad=True, type="mesh"):
+        selection = self.__selection
+        for elem in selection:
             RestPosToVertexColorTool.store_rest(elem)
+        select(selection)
 
     # Refresh the button
     def __refresh_btn(self):
-        self._action_btn.setEnabled(len(ls(sl=True)) > 0)
+        self._action_btn.setEnabled(len(self.__selection) > 0)
+
+    def __retrieve_selection(self):
+        transform = ls(sl=True)
+        self.__selection = listRelatives(transform, ad=True, type="mesh")
 
     # Refresh the button on selection changed
     def on_selection_changed(self):
+        self.__retrieve_selection()
         self.__refresh_btn()
 
     def populate(self):
         layout = super(RestPosToVertexColorTool, self).populate()
+        self.__retrieve_selection()
         self.__refresh_btn()
         return layout
