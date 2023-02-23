@@ -24,9 +24,6 @@ class BobTool(BobElement, ABC):
         layout.addWidget(collapsible)
         return layout
 
-    def on_populate_done(self):
-        pass
-
     def on_selection_changed(self):
         pass
 

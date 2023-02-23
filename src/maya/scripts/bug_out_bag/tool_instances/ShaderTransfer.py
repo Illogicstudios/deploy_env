@@ -35,5 +35,7 @@ class ShaderTransfer(ActionTool):
     def on_selection_changed(self):
         self.__refresh_btn()
 
-    def on_populate_done(self):
+    def populate(self):
+        layout = super(ShaderTransfer, self).populate()
         self.__refresh_btn()
+        return layout

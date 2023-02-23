@@ -36,7 +36,7 @@ class CleanFreezeTool(ActionTool):
 
     def __delete_history(self):
         for item in self.__selection:
-            delete(item["transform"], constructionHistory =True)
+            delete(item["transform"], constructionHistory=True)
 
     def __retrieve_selection(self):
         selection = CleanFreezeTool.__get_transforms_selected()
@@ -90,3 +90,18 @@ class CleanFreezeTool(ActionTool):
             if item["scaleX"]: transform.scaleX.lock()
             if item["scaleY"]: transform.scaleY.lock()
             if item["scaleZ"]: transform.scaleZ.lock()
+
+    # Refresh the button
+    def __refresh_btn(self):
+        self._action_btn.setEnabled(len(self.__selection) > 0)
+
+    # Refresh the button on selection changed
+    def on_selection_changed(self):
+        self.__retrieve_selection()
+        self.__refresh_btn()
+
+    def populate(self):
+        layout = super(CleanFreezeTool, self).populate()
+        self.__retrieve_selection()
+        self.__refresh_btn()
+        return layout

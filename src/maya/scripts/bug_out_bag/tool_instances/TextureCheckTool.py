@@ -89,8 +89,10 @@ class TextureCheckTool(ActionTool):
         self.__texture_check_dialog.show()
         self.__texture_check_dialog.refresh_ui()
 
-    def on_populate_done(self):
+    def populate(self):
+        layout = super(TextureCheckTool, self).populate()
         self.__refresh_btn()
+        return layout
 
     # setter of the state opened
     def set_opened(self, opened):

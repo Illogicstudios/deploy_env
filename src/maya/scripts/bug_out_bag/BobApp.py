@@ -26,6 +26,8 @@ from tool_instances.CleanerTool import *
 from tool_instances.TextureCheckTool import *
 from tool_instances.ShaderTransfer import *
 from tool_instances.RestPosToVertexColorTool import *
+from tool_instances.DeleteOrigTool import *
+from tool_instances.UVCopierTool import *
 
 # ######################################################################################################################
 
@@ -51,12 +53,16 @@ class BobApp(QDialog):
         self.__bob_categories = [
             BobCategory("Utils", self.__prefs, [
                 LockTool(),
+                ShaderTransfer(),
+                RestPosToVertexColorTool(),
+                UVCopierTool(),
+            ]),
+            BobCategory("Clean", self.__prefs, [
                 CleanFreezeTool(),
                 CleanerTool(),
                 TextureCheckTool(),
-                ShaderTransfer(),
-                RestPosToVertexColorTool(),
-            ])
+                DeleteOrigTool(),
+            ]),
         ]
         self.__selected_category = 0
 

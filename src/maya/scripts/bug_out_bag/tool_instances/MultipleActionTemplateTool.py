@@ -2,29 +2,28 @@ from tool_models.MultipleActionTool import *
 
 
 class MultipleActionTemplateTool(MultipleActionTool):
-
     def __init__(self):
-        actions = [
-            {
+        actions = {
+            "action_1": {
                 "text": "Action 1",
                 "action": self.__action_1,
-                "row":0
+                "row": 0
             },
-            {
+            "action_2": {
                 "text": "Action 2",
                 "action": self.__action_2,
-                "row":1
+                "row": 1
             },
-            {
+            "action_3": {
                 "text": "Action 3",
                 "action": self.__action_3
             },
-            {
+            "action_4": {
                 "text": "Action 4",
                 "action": self.__action_4,
-                "row":1
+                "row": 1
             }
-        ]
+        }
         super().__init__(name="Multiple Action Tool", pref_name="multiple_action_template_tool",
                          actions=actions, stretch=True)
 

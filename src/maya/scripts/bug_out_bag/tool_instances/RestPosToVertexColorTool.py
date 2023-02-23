@@ -17,7 +17,7 @@ class RestPosToVertexColorTool(ActionTool):
             polyColorPerVertex(rgb=pos)
 
     def __init__(self):
-        super().__init__(name="Rest Pos to Vertex Color",pref_name="rest_pos_to_vertex_color_tool",
+        super().__init__(name="Rest Pos to Vertex Color", pref_name="rest_pos_to_vertex_color_tool",
                          description="Store rest position to the vertex color", button_text="Store")
 
     def _action(self):
@@ -33,5 +33,7 @@ class RestPosToVertexColorTool(ActionTool):
     def on_selection_changed(self):
         self.__refresh_btn()
 
-    def on_populate_done(self):
+    def populate(self):
+        layout = super(RestPosToVertexColorTool, self).populate()
         self.__refresh_btn()
+        return layout
