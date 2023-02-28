@@ -31,12 +31,10 @@ class SplineStepTool(MultipleActionTool):
 
     def __step(self):
         keyTangent(g=True, inTangentType="linear", outTangentType="step")
-        # keyTangent(g=True, )
         self.__refresh_btn()
 
     def __spline(self):
         keyTangent(g=True, inTangentType="auto", outTangentType="auto")
-        # keyTangent(g=True, )
         self.__refresh_btn()
 
     def __keys_to_step(self):
