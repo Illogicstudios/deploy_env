@@ -14,12 +14,12 @@ global proc shelf_Illogic () {
         -manage 1
         -visible 1
         -preventOverride 0
-        -annotation "import maya.mel as mel\nimport maya.cmds as cmds\n\nlibDir = mel.eval('$s=`getenv \"LIB_DIR\"`;')\n\ncmds.file( 'R:/lib/3d/studio/studio.mb', r=True )\n#cmds.file( 'R:/lib/3d/studio/studio.mb', rr=True )" 
+        -annotation "BOB" 
         -enableBackground 0
         -backgroundColor 0 0 0 
         -highlightColor 0.321569 0.521569 0.65098 
         -align "center" 
-        -label "import maya.mel as mel\nimport maya.cmds as cmds\n\nlibDir = mel.ev..." 
+        -label "BOB" 
         -labelOffset 0
         -rotation 0
         -flipX 0
@@ -28,12 +28,12 @@ global proc shelf_Illogic () {
         -font "plainLabelFont" 
         -overlayLabelColor 0.8 0.8 0.8 
         -overlayLabelBackColor 0 0 0 0.5 
-        -image "R:/pipeline/pipe/maya/icons/on.png" 
-        -image1 "R:/pipeline/pipe/maya/icons/on.png" 
+        -image "C:/Users/m.jenin/Documents/marius/deploy_env/src/maya/icons/bob.png" 
+        -image1 "C:/Users/m.jenin/Documents/marius/deploy_env/src/maya/icons/bob.png" 
         -style "iconOnly" 
         -marginWidth 1
         -marginHeight 1
-        -command "import maya.mel as mel\nimport maya.cmds as cmds\n\nlibDir = mel.eval('$s=`getenv \"LIB_DIR\"`;')\n\ncmds.file( libDir+'/studio/studio.mb', r=True )" 
+        -command "import sys\nimport importlib\n\nmodules = [\n    \"BobApp\",\n    \"Prefs\",\n    \"BobElement\",\n    \"BobCategory\",\n    \"BobTool\",\n    \"BobCollapsibleWidget\",\n    # Tool Models\n    \"tool_models.ActionTool\",\n    \"tool_models.MultipleActionTool\",\n    \"tool_models.RoutineTool\",\n    # Tool Instance Templates\n    \"tool_instances.ActionTemplateTool\",\n    \"tool_instances.MultipleActionTemplateTool\",\n    \"tool_instances.RoutineTemplateTool\",\n    # Tool Instances\n    \"tool_instances.LockTool\",\n    \"tool_instances.CleanFreezeTool\",\n    \"tool_instances.CleanerTool\",\n    \"tool_instances.TextureCheckTool\",\n    \"tool_instances.ShaderTransfer\",\n    \"tool_instances.RestPosToVertexColorTool\",\n    \"tool_instances.DeleteOrigTool\",\n    \"tool_instances.UVCopierTool\",\n    \"tool_instances.ShapeRenamerTool\",\n]\n\nfrom utils import *\nunload_packages(silent=True, packages=modules)\n\nfor module in modules:\n    importlib.import_module(module)\n\nfrom BobApp import *\n\ntry:\n    bob.close()\nexcept:\n    pass\nbob = BobApp()\nbob.show()\n" 
         -sourceType "python" 
         -commandRepeatable 1
         -flat 1
@@ -48,46 +48,12 @@ global proc shelf_Illogic () {
         -manage 1
         -visible 1
         -preventOverride 0
-        -annotation "import maya.mel as mel\nimport maya.cmds as cmds\n\nlibDir = mel.eval('$s=`getenv \"LIB_DIR\"`;')\n\n#cmds.file( libDir+'/3d/studio/studio.mb', r=True )\ncmds.file( libDir+'/3d/studio/studio.mb', rr=True )" 
+        -annotation "Shader Maker" 
         -enableBackground 0
         -backgroundColor 0 0 0 
         -highlightColor 0.321569 0.521569 0.65098 
         -align "center" 
-        -label "import maya.mel as mel\nimport maya.cmds as cmds\n\nlibDir = mel.ev..." 
-        -labelOffset 0
-        -rotation 0
-        -flipX 0
-        -flipY 0
-        -useAlpha 1
-        -font "plainLabelFont" 
-        -overlayLabelColor 0.8 0.8 0.8 
-        -overlayLabelBackColor 0 0 0 0.5 
-        -image "R:/pipeline/pipe/maya/icons/offstudio.png" 
-        -image1 "R:/pipeline/pipe/maya/icons/offstudio.png" 
-        -style "iconOnly" 
-        -marginWidth 1
-        -marginHeight 1
-        -command "import maya.mel as mel\nimport maya.cmds as cmds\n\nlibDir = mel.eval('$s=`getenv \"LIB_DIR\"`;')\n\ncmds.file( libDir+'/studio/studio.mb', rr=True )" 
-        -sourceType "python" 
-        -commandRepeatable 1
-        -flat 1
-    ;
-    shelfButton
-        -enableCommandRepeat 1
-        -flexibleWidthType 3
-        -flexibleWidthValue 32
-        -enable 1
-        -width 35
-        -height 34
-        -manage 1
-        -visible 1
-        -preventOverride 0
-        -annotation "import sys\n\ninstall_dir = 'R:/pipeline/pipe/maya/scripts/shader_maker'\nif not sys.path.__contains__(install_dir):\n    sys.path.append(install_dir)\n\nimport ShaderMaker\nfrom ShaderMaker import *\n\nunload_packages(silent=True, packages=[\"ShaderMaker\", \"Shader\"])\nltp = ShaderMaker()\nltp.show()\n" 
-        -enableBackground 0
-        -backgroundColor 0 0 0 
-        -highlightColor 0.321569 0.521569 0.65098 
-        -align "center" 
-        -label "import sys\n\ninstall_dir = 'R:/pipeline/pipe/maya/scripts/shader_..." 
+        -label "Shader Maker" 
         -labelOffset 0
         -rotation 0
         -flipX 0
@@ -116,12 +82,12 @@ global proc shelf_Illogic () {
         -manage 1
         -visible 1
         -preventOverride 0
-        -annotation "BOB" 
+        -annotation "User Script" 
         -enableBackground 0
         -backgroundColor 0 0 0 
         -highlightColor 0.321569 0.521569 0.65098 
         -align "center" 
-        -label "import sys\nimport importlib\n\ninstall_dir = \"R:/pipeline/pipe/may..." 
+        -label "Studio" 
         -labelOffset 0
         -rotation 0
         -flipX 0
@@ -130,12 +96,12 @@ global proc shelf_Illogic () {
         -font "plainLabelFont" 
         -overlayLabelColor 0.8 0.8 0.8 
         -overlayLabelBackColor 0 0 0 0.5 
-        -image "C:/Users/m.jenin/Documents/marius/deploy_env/src/maya/icons/bob.png" 
-        -image1 "C:/Users/m.jenin/Documents/marius/deploy_env/src/maya/icons/bob.png" 
+        -image "C:/Users/m.jenin/Documents/marius/deploy_env/src/maya/icons/studio.png" 
+        -image1 "C:/Users/m.jenin/Documents/marius/deploy_env/src/maya/icons/studio.png" 
         -style "iconOnly" 
         -marginWidth 1
         -marginHeight 1
-        -command "import sys\nimport importlib\n\nmodules = [\n    \"BobApp\",\n    \"Prefs\",\n    \"BobElement\",\n    \"BobCategory\",\n    \"BobTool\",\n    \"BobCollapsibleWidget\",\n    # Tool Models\n    \"tool_models.ActionTool\",\n    \"tool_models.MultipleActionTool\",\n    \"tool_models.RoutineTool\",\n    # Tool Instance Templates\n    \"tool_instances.ActionTemplateTool\",\n    \"tool_instances.MultipleActionTemplateTool\",\n    \"tool_instances.RoutineTemplateTool\",\n    # Tool Instances\n    \"tool_instances.LockTool\",\n    \"tool_instances.CleanFreezeTool\",\n    \"tool_instances.CleanerTool\",\n    \"tool_instances.TextureCheckTool\",\n    \"tool_instances.ShaderTransfer\",\n    \"tool_instances.RestPosToVertexColorTool\",\n    \"tool_instances.DeleteOrigTool\",\n    \"tool_instances.UVCopierTool\",\n    \"tool_instances.ShapeRenamerTool\",\n]\n\nfrom utils import *\nunload_packages(silent=True, packages=modules)\n\nfor module in modules:\n    importlib.import_module(module)\n\nfrom BobApp import *\n\ntry:\n    bob.close()\nexcept:\n    pass\nbob = BobApp()\nbob.show()\n" 
+        -command "import importlib\n\nmodules=[\"studio_loader\"]\n\nfrom utils import *\nunload_packages(silent=True, packages=modules)\n\nfor module in modules:\n    importlib.import_module(module)\n\nimport studio_loader\n\nstudio_loader.run()\n" 
         -sourceType "python" 
         -commandRepeatable 1
         -flat 1

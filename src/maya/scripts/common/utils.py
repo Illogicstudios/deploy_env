@@ -45,20 +45,22 @@ def __get_val(v):
         return str(v)
 
 
-def print_var(*vs):
-    __print_var_aux(vs)
+def print_var(*vs, empty_tab=False):
+    vs = vs[0] if len(vs) == 1 else vs
+    tabulation = "\t" if empty_tab else "`\t"
+    __print_var_aux(vs, tabulation)
 
 
-def __print_var_aux(v, tabs=0, v_in_dict=False):
-    tabulation = "`\t"
+def __print_var_aux(v, tabulation, tabs=0, v_in_dict=False):
     if type(v) is dict:
-        if v_in_dict : print("")
-        if len(v) == 0 : print("{}")
+        if v_in_dict: print("")
+        if len(v) == 0:
+            print("{}")
         else:
             print(tabs * tabulation + "{")
             for key, elems in v.items():
                 print((tabs + 1) * tabulation + __get_val(key) + " : ", end="")
-                __print_var_aux(elems,tabs + 1, True)
+                __print_var_aux(elems, tabulation, tabs + 1, True)
             print(tabs * tabulation + "}")
     elif type(v) is list or type(v) is tuple:
         if type(v) is list:
@@ -67,12 +69,13 @@ def __print_var_aux(v, tabs=0, v_in_dict=False):
         else:
             char_start = "("
             char_end = ")"
-        if len(v) == 0 : print(char_start+char_end)
+        if len(v) == 0:
+            print(char_start + char_end)
         else:
-            if v_in_dict : print("")
+            if v_in_dict: print("")
             print(tabs * tabulation + char_start)
             for elem_list in v:
-                __print_var_aux(elem_list,tabs + 1, False)
+                __print_var_aux(elem_list, tabulation, tabs + 1, False)
             print(tabs * tabulation + char_end)
     else:
 
