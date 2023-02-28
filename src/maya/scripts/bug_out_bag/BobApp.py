@@ -29,6 +29,7 @@ from tool_instances.RestPosToVertexColorTool import *
 from tool_instances.DeleteOrigTool import *
 from tool_instances.UVCopierTool import *
 from tool_instances.ShapeRenamerTool import *
+from tool_instances.SplineStepTool import *
 
 # ######################################################################################################################
 
@@ -57,6 +58,7 @@ class BobApp(QDialog):
                 ShaderTransfer(),
                 RestPosToVertexColorTool(),
                 UVCopierTool(),
+                SplineStepTool(),
             ]),
             BobCategory("Clean", self.__prefs, [
                 CleanFreezeTool(),

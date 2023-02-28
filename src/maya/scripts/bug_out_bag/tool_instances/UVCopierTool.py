@@ -17,7 +17,7 @@ class UVCopierTool(MultipleActionTool):
             }
         }
         super().__init__(name="UV Copier", pref_name="uv_copier_tool",
-                         actions=actions, stretch=True)
+                         actions=actions, stretch=1)
         self.__selected_shapes = []
 
     def __current_uv_to_default(self):

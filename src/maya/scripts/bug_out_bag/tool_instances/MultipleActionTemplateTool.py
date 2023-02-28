@@ -21,11 +21,12 @@ class MultipleActionTemplateTool(MultipleActionTool):
             "action_4": {
                 "text": "Action 4",
                 "action": self.__action_4,
-                "row": 1
+                "row": 1,
+                "stretch": 2
             }
         }
         super().__init__(name="Multiple Action Tool", pref_name="multiple_action_template_tool",
-                         actions=actions, stretch=True)
+                         actions=actions, stretch=1)
 
     def __action_1(self):
         print("Action 1")

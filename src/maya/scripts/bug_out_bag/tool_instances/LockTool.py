@@ -15,7 +15,7 @@ class LockTool(MultipleActionTool):
             }
         }
         tooltip = "Lock or Unlock the selection"
-        super().__init__(name="Lock", pref_name="lock_tool", actions=actions, stretch=True, tooltip=tooltip)
+        super().__init__(name="Lock", pref_name="lock_tool", actions=actions, stretch=1, tooltip=tooltip)
         self.__select_children = True
         self.__ignore_root = False
         self.__select_children_checkbox = None
