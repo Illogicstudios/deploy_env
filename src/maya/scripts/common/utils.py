@@ -1,6 +1,11 @@
 import math
 import sys
-from pymel.core import *
+
+try:
+    from pymel.core import *
+except:
+    # Maya not found
+    pass
 
 
 # Clear a layout recusrively
