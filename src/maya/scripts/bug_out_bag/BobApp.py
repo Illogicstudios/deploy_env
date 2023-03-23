@@ -31,6 +31,7 @@ from tool_instances.UVCopierTool import *
 from tool_instances.ShapeRenamerTool import *
 from tool_instances.SplineStepTool import *
 from tool_instances.OverrideKillerTool import *
+from tool_instances.ShadingGroupRenamer import *
 
 # ######################################################################################################################
 
@@ -67,6 +68,7 @@ class BobApp(QDialog):
                 TextureCheckTool(),
                 DeleteOrigTool(),
                 ShapeRenamerTool(),
+                ShadingGroupRenamer(),
                 OverrideKillerTool(),
             ]),
         ]
