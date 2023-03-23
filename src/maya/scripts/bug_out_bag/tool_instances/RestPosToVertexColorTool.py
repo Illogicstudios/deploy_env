@@ -4,6 +4,7 @@ from tool_models.ActionTool import *
 class RestPosToVertexColorTool(ActionTool):
     @staticmethod
     def store_rest(obj):
+        print(obj)
         rest = "Pref"
         colorSets = polyColorSet(query=True, allColorSets=True)
 
@@ -15,6 +16,7 @@ class RestPosToVertexColorTool(ActionTool):
             pos = xform(v, q=True, ws=True, t=True)
             select(v)
             polyColorPerVertex(rgb=pos)
+        obj.aiExportColors.set(1)
 
     def __init__(self):
         super().__init__(name="Rest Pos to Vertex Color", pref_name="rest_pos_to_vertex_color_tool",
