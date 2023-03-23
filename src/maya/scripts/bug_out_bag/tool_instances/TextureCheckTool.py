@@ -133,7 +133,7 @@ class TextureCheckDialog(QDialog):
         # Makes the object get deleted from memory, not just hidden, when it is closed.
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 
-        self.__bad_cs_tex = self.build_bad_cs()
+        self.__bad_cs_tex = {}
 
         # Create the layout, linking it to actions and refresh the display
         self.__create_ui()
@@ -166,6 +166,7 @@ class TextureCheckDialog(QDialog):
 
     # On show event create the callbacks and initialize some values
     def showEvent(self, arg__1: QtGui.QShowEvent) -> None:
+        self.__bad_cs_tex = self.build_bad_cs()
         self.__create_callback()
         self.__tool.set_opened(True)
         self.__opened = True
