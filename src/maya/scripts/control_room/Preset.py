@@ -15,9 +15,10 @@ class Preset:
             active = False
         return cls(name, preset_dict, active)
 
-    def __init__(self, name, fields=None, active=False):
+    def __init__(self, name, fields=None, fields_saved = None, active=False):
         self.__name = name.replace(" ", "_")
         self.__fields = {} if fields is None or type(fields) is not dict else fields
+        self.__fields_saved = {} if fields_saved is None or type(fields_saved) is not dict else fields_saved
         self.__active = active
 
     # ###################################################### dict ######################################################
@@ -30,9 +31,11 @@ class Preset:
 
     # Get an attribute
     def get(self, part_name, key):
-        if part_name not in self.__fields or key not in self.__fields[part_name]:
-            return None
         return self.__fields[part_name][key]
+
+    # Check if preset has a field
+    def contains(self, part_name, key):
+        return part_name in self.__fields and key in self.__fields[part_name]
 
     # Getter of the keys
     def keys(self):
@@ -74,3 +77,13 @@ class Preset:
         preset_dict["name"] = self.__name
         preset_dict["active"] = self.__active
         return preset_dict
+
+    def filter(self, filter_dict):
+        to_pop = []
+        for part, fields in self.__fields.items():
+            for field in fields.keys():
+                item = {"part":part, "field": field}
+                if item not in filter_dict:
+                    to_pop.append(item)
+        for item in to_pop:
+            self.__fields[item["part"]].pop(item["field"])

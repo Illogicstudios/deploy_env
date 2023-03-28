@@ -13,9 +13,10 @@ from utils import *
 
 
 class ControlRoomPart(ABC):
-    def __init__(self, control_room, name):
+    def __init__(self, control_room, name, part_name):
         self._control_room = control_room
         self._name = name
+        self._part_name = part_name
 
     # Generate the part's UI
     def create_ui(self):
@@ -53,10 +54,10 @@ class ControlRoomPart(ABC):
 
     # Generate the part's attributes in the preset
     @abstractmethod
-    def add_to_preset(self, part_name, preset):
+    def add_to_preset(self, preset):
         pass
 
     # Apply the preset
     @abstractmethod
-    def apply(self, part_name, preset):
+    def apply(self, preset):
         pass

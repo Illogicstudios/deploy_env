@@ -67,7 +67,7 @@ global proc shelf_Illogic () {
         -style "iconOnly" 
         -marginWidth 1
         -marginHeight 1
-        -command "import sys\nimport importlib\n\nmodules = [\n    \"ControlRoom\",\n    \"Preset\",\n    \"PresetManager\",\n    \"FormSlider\",\n    \"parts.CameraPart\",\n    \"parts.FeatureOverridesPart\",\n    \"parts.DepthOfFieldPart\",\n    \"parts.MotionBlurPart\",\n    \"parts.ImageSizePart\",\n    \"parts.SamplingPart\",\n    \"parts.AdaptiveSamplingPart\",\n    \"parts.PresetsPart\",\n]\n\n\nfrom utils import *\nunload_packages(silent=True, packages=modules)\n\nfor module in modules:\n    importlib.import_module(module)\n\n\nfrom ControlRoom import *\n\ntry:\n    control_room.close()\nexcept:\n    pass\ncontrol_room = ControlRoom()\ncontrol_room.show()\n" 
+        -command "import sys\nimport importlib\n\nmodules = [\n    \"ControlRoom\",\n    \"Preset\",\n    \"PresetManager\",\n    \"FormSlider\",\n    \"parts.FeatureOverridesPart\",\n    \"parts.DepthOfFieldPart\",\n    \"parts.MotionBlurPart\",\n    \"parts.ImageSizePart\",\n    \"parts.SamplingPart\",\n    \"parts.AdaptiveSamplingPart\",\n    \"parts.PresetsPart\",\n]\n\n\nfrom utils import *\nunload_packages(silent=True, packages=modules)\n\nfor module in modules:\n    importlib.import_module(module)\n\n\nfrom ControlRoom import *\n\ntry:\n    control_room.close()\nexcept:\n    pass\ncontrol_room = ControlRoom()\ncontrol_room.show()\n" 
         -sourceType "python" 
         -commandRepeatable 1
         -flat 1

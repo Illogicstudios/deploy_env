@@ -28,7 +28,6 @@ import maya.app.renderSetup.model.override as maya_override
 import maya.app.renderSetup.model.renderSetup as render_setup
 import maya.app.renderSetup.model.utils as render_setup_utils
 
-from parts.CameraPart import *
 from parts.FeatureOverridesPart import *
 from parts.DepthOfFieldPart import *
 from parts.MotionBlurPart import *
@@ -43,6 +42,8 @@ _FILE_NAME_PREFS = "control_room"
 
 OVERRIDE_BG_COLOR = "rgb(100,50,25)"
 OVERRIDE_LABEL_COLOR = "rgb(230,115,60)"
+PRESET_CONTAINS_LABEL_COLOR = "rgb(151, 154, 206)"
+PRESET_CONTAINS_AND_DIFFERENT_LABEL_COLOR = "rgb(53, 200, 223)"
 
 
 # ######################################################################################################################
@@ -83,20 +84,20 @@ class ControlRoom(QDialog):
         asset_path = os.path.dirname(__file__) + "/assets"
 
         # Model attributes
-        self.__parts = {
-            "camera": CameraPart(self),
-            "feature_overrides": FeatureOverridesPart(self),
-            "dof": DepthOfFieldPart(self),
-            "motion_blur": MotionBlurPart(self),
-            "image_size": ImageSizePart(self),
-            "sampling": SamplingPart(self),
-            "adaptive_sampling": AdaptiveSamplingPart(self),
-            "presets": PresetsPart(self, asset_path),
-        }
+        self.__parts = [
+            FeatureOverridesPart(self, "feature_overrides"),
+            DepthOfFieldPart(self, "dof"),
+            MotionBlurPart(self, "motion_blur"),
+            ImageSizePart(self, "image_size"),
+            SamplingPart(self, "sampling"),
+            AdaptiveSamplingPart(self, "adaptive_sampling"),
+        ]
+        self.__preset_part = PresetsPart(self, asset_path, "assets")
+        self.__hovered_preset = None
 
         # UI attributes
         self.__ui_width = 550
-        self.__ui_height = 940
+        self.__ui_height = 780
         self.__ui_min_width = 550
         self.__ui_pos = QDesktopWidget().availableGeometry().center() - QPoint(self.__ui_width, self.__ui_height) / 2
 
@@ -161,47 +162,76 @@ class ControlRoom(QDialog):
         self.move(self.__ui_pos)
 
         # Main Layout
-        main_lyt = QVBoxLayout()
+        main_lyt = QHBoxLayout()
         main_lyt.setContentsMargins(3, 8, 3, 0)
-        main_lyt.setSpacing(5)
+        main_lyt.setSpacing(10)
         main_lyt.setAlignment(Qt.AlignTop)
         self.setLayout(main_lyt)
 
-        for part in self.__parts.values():
-            main_lyt.addLayout(part.create_ui())
+        # Parts Layout
+        parts_lyt = QVBoxLayout()
+        parts_lyt.setSpacing(5)
+        parts_lyt.setAlignment(Qt.AlignTop)
+        for part in self.__parts:
+            parts_lyt.addLayout(part.create_ui())
+        main_lyt.addLayout(parts_lyt)
+
+        # Presets Part
+        main_lyt.addLayout(self.__preset_part.create_ui())
 
     # Refresh the ui according to the model attribute
     def __refresh_ui(self):
-        for part in self.__parts.values():
+        for part in self.__parts:
             part.refresh_ui()
+        self.__preset_part.refresh_ui()
+
+    def set_hovered_preset(self, preset):
+        self.__hovered_preset = preset
+        for part in self.__parts:
+            part.refresh_ui()
+        if self.__hovered_preset is not None :
+            QApplication.setOverrideCursor(Qt.WhatsThisCursor)
+        else:
+            QApplication.restoreOverrideCursor()
+    def get_stylesheet_color_for_field(self, part_name, field_name, val, override=None):
+        if self.__hovered_preset and self.__hovered_preset.contains(part_name, field_name):
+            if self.__hovered_preset.get(part_name, field_name) != val:
+                ss_color = "color:" + cr.PRESET_CONTAINS_AND_DIFFERENT_LABEL_COLOR
+            else:
+                ss_color = "color:" + cr.PRESET_CONTAINS_LABEL_COLOR
+        elif override is not None:
+            ss_color = "color:" + cr.OVERRIDE_LABEL_COLOR
+        else:
+            ss_color = ""
+        return ss_color
 
     # Add the callbacks of all parts
     def __add_callbacks(self):
-        for part in self.__parts.values():
+        for part in self.__parts:
             part.add_callbacks()
+        self.__preset_part.add_callbacks()
 
     # Remove the callbacks of all parts
     def __remove_callbacks(self):
-        for part in self.__parts.values():
+        for part in self.__parts:
             part.remove_callbacks()
+        self.__preset_part.remove_callbacks()
 
     # Generate a preset with the attributes of all parts
     def generate_preset(self, preset_name):
         preset_manager = PresetManager.get_instance()
         preset = Preset(name=preset_name, active=True)
-        for part_name, part in self.__parts.items():
-            part.add_to_preset(part_name, preset)
-        preset_manager.add_preset(preset)
-        preset_manager.save_presets()
+        for part in self.__parts:
+            part.add_to_preset(preset)
+        self.__preset_part.add_to_preset(preset)
+        success_creation = self.__preset_part.filter(preset)
+        if success_creation:
+            preset_manager.add_preset(preset)
+            preset_manager.save_presets()
 
     # Apply a preset to all parts
     def apply_preset(self, preset):
-        for part_name, part in self.__parts.items():
-            part.apply(part_name, preset)
-        for part in self.__parts.values():
-            part.refresh_ui()
-
-    # On cam changed
-    def cam_changed(self, cam):
-        self.__parts["dof"].cam_changed(cam)
-        self.__parts["image_size"].cam_changed(cam)
+        for part in self.__parts:
+            part.apply(preset)
+        self.__preset_part.apply(preset)
+        self.__refresh_ui()

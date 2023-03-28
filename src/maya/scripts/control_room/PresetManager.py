@@ -1,5 +1,7 @@
 import json
 import base64
+import os.path
+
 from pymel.core import *
 from utils import *
 from Preset import *
@@ -15,12 +17,14 @@ class PresetManager:
         if PresetManager.__instance is None:
             PresetManager.__instance = PresetManager()
             PresetManager.__instance.retrieve_presets()
+            PresetManager.__instance.retrieve_default_presets()
         return PresetManager.__instance
 
     # ################################################### Singleton ####################################################
 
     def __init__(self):
         self.__presets = []
+        self.__default_presets = []
         self.__active_preset = None
 
     # Clear the presets
@@ -63,12 +67,15 @@ class PresetManager:
         if "presets" in fileInfo:
             found_active = False
             json_presets = fileInfo["presets"].replace("\\\"", "\"")
-            arr_json_presets = json.loads(json_presets)
-            for json_preset in arr_json_presets:
-                preset = Preset.create_from_existant(json_preset)
-                if preset.is_active() and not found_active:
-                    self.__active_preset = preset
-                self.__presets.append(preset)
+            try:
+                arr_json_presets = json.loads(json_presets)
+                for json_preset in arr_json_presets:
+                    preset = Preset.create_from_existant(json_preset)
+                    if preset.is_active() and not found_active:
+                        self.__active_preset = preset
+                    self.__presets.append(preset)
+            except:
+                print_warning("Error while trying to parse an existing preset")
 
     # Save presets in the scene
     def save_presets(self):
@@ -81,6 +88,25 @@ class PresetManager:
     def get_presets(self):
         self.__presets.sort(key=lambda x: x.get_name())
         return self.__presets
+
+    # Getter of the default presets
+    def get_default_presets(self):
+        return self.__default_presets
+
+    # Retrieve all the default presets
+    def retrieve_default_presets(self):
+        self.__default_presets = []
+        default_preset_dir = os.path.join(os.path.dirname(__file__), "default_preset")
+        for preset_filename in os.listdir(default_preset_dir):
+            preset_path = os.path.join(default_preset_dir, preset_filename)
+            try:
+                if os.path.isfile(preset_path):
+                    with open(preset_path, "r") as f:
+                        preset_json = f.read().replace("\\\"", "\"").replace("\\n", "")
+                        self.__default_presets.append(Preset.create_from_existant(json.loads(preset_json)))
+            except:
+                print_warning("Error while trying to parse a default preset : "+preset_path)
+
 
     # Getter of whether a preset exist with a given name
     def has_preset_with_name(self, name):

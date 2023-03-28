@@ -20,9 +20,11 @@ class FormSliderType(Enum):
 
 
 class FormSlider:
-    def __init__(self, type, name, field_name, key_preset, min, max, mmax=None):
+    def __init__(self, control_room,  type, name, part_name, field_name, key_preset, min, max, mmax=None):
+        self.__control_room = control_room
         self.__type = type
         self.__name = name
+        self.__part_name = part_name
         self.__field_name = field_name
         self.__key_preset = key_preset
         self.__min = min
@@ -118,10 +120,10 @@ class FormSlider:
     # Refresh the UI
     def refresh_ui(self):
         val = getAttr(self.__field_name)
-        if getAttr(self.__field_name) >= self.__max:
+        if val >= self.__max:
             self.__ui_slider.setMaximum(val * self.__mult)
         self.__ui_slider.setValue(val * self.__mult)
-        self.__ui_value_line_edit.setText(str(round(getAttr(self.__field_name), 3)))
+        self.__ui_value_line_edit.setText(str(round(val, 3)))
 
         visible_layer = render_setup.instance().getVisibleRenderLayer()
         is_default_layer = visible_layer.name() == "defaultRenderLayer"
@@ -129,9 +131,11 @@ class FormSlider:
         self.__action_remove_override.setEnabled(not is_default_layer and self.__override is not None)
 
         stylesheet_bg = "background-color:" + cr.OVERRIDE_BG_COLOR if self.__override is not None else ""
-        stylesheet_lbl = "color:" + cr.OVERRIDE_LABEL_COLOR if self.__override is not None else ""
+        stylesheet_lbl = self.__control_room.get_stylesheet_color_for_field(
+            self.__part_name, self.__key_preset, val, self.__override)
         self.__ui_background_widget.setStyleSheet("QWidget#widget_form_slider{" + stylesheet_bg + "}")
         self.__ui_lbl_widget.setStyleSheet("QLabel{" + stylesheet_lbl + "}")
+        self.__retrieve_override()
 
     # Add callbacks
     def add_callbacks(self):
