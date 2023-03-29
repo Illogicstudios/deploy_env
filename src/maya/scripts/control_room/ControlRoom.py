@@ -94,6 +94,7 @@ class ControlRoom(QDialog):
         ]
         self.__preset_part = PresetsPart(self, asset_path, "assets")
         self.__hovered_preset = None
+        self.__new_scene_callback = None
 
         # UI attributes
         self.__ui_width = 550
@@ -193,6 +194,10 @@ class ControlRoom(QDialog):
             QApplication.setOverrideCursor(Qt.WhatsThisCursor)
         else:
             QApplication.restoreOverrideCursor()
+
+    def get_hovered_preset(self):
+        return self.__hovered_preset
+
     def get_stylesheet_color_for_field(self, part_name, field_name, val, override=None):
         if self.__hovered_preset and self.__hovered_preset.contains(part_name, field_name):
             if self.__hovered_preset.get(part_name, field_name) != val:
@@ -205,8 +210,13 @@ class ControlRoom(QDialog):
             ss_color = ""
         return ss_color
 
+    def on_new_scene(self):
+        self.hide()
+        self.close()
+
     # Add the callbacks of all parts
     def __add_callbacks(self):
+        self.__new_scene_callback = scriptJob(runOnce=True, event=["SceneOpened", self.on_new_scene])
         for part in self.__parts:
             part.add_callbacks()
         self.__preset_part.add_callbacks()

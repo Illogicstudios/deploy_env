@@ -17,6 +17,7 @@ class ControlRoomPart(ABC):
         self._control_room = control_room
         self._name = name
         self._part_name = part_name
+        self._preset_hovered = False
 
     # Generate the part's UI
     def create_ui(self):

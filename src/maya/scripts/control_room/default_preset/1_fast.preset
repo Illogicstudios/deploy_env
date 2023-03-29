@@ -1,0 +1,31 @@
+{
+    "name": "Quick",
+    "feature_overrides": {
+        "ignore_subdivision": true,
+        "ignore_displacement": true,
+        "ignore_motion": true,
+        "ignore_dof": true,
+        "ignore_aovs": true,
+        "output_denoising": false
+    },
+    "dof": {
+    },
+
+    "image_size": {
+        "width": 1280,
+        "height": 720
+    },
+    "sampling": {
+        "camera_aa": 3,
+        "diffuse": 1,
+        "specular": 1,
+        "transmission": 1,
+        "sss": 1,
+        "indirect_vol": 1,
+        "ray_depth_diffuse": 1,
+        "ray_depth_specular": 1
+    },
+    "adaptive_sampling": {
+        "enable_adaptive_sampling": false
+    }
+}

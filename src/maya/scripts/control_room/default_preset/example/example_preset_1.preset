@@ -1,0 +1,44 @@
+{
+    "name": "preset_1",
+    "feature_overrides": {
+        "ignore_subdivision": false,
+        "ignore_displacement": false,
+        "ignore_motion": false,
+        "ignore_dof": false,
+        "ignore_aovs": true,
+        "output_denoising": false
+    },
+    "dof": {
+        "depthOfField": false,
+        "fStop": 5.6
+    },
+    "motion_blur": {
+        "motion_blur_keys": 2,
+        "motion_blur_step": 0.5,
+        "enable": false,
+        "instant_shutter": false
+    },
+    "image_size": {
+        "width": 960,
+        "height": 540,
+        "overscan": 1.0,
+        "opacity_gate": false,
+        "gate_enabled": false
+    },
+    "sampling": {
+        "camera_aa": 3,
+        "diffuse": 2,
+        "specular": 2,
+        "transmission": 2,
+        "sss": 2,
+        "indirect_vol": 2,
+        "ray_depth_diffuse": 1,
+        "ray_depth_specular": 1,
+        "progressive_render": false
+    },
+    "adaptive_sampling": {
+        "camera_aa": 20,
+        "diffuse": 0.014000000432133675,
+        "enable": false
+    }
+}

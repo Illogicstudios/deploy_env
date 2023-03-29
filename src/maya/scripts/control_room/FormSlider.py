@@ -43,7 +43,7 @@ class FormSlider:
         self.__ui_slider = None
         self.__ui_lbl_widget = None
         self.__ui_background_widget = None
-
+        self.__preset_hovered = False
         self.__retrieve_override()
 
     # Create an override for the field of the slider
@@ -68,14 +68,16 @@ class FormSlider:
         else:
             value = value / self.__mult
         self.__ui_value_line_edit.setText(str(value))
-        setAttr(self.__field_name, value)
+        if not self.__preset_hovered:
+            setAttr(self.__field_name, value)
 
     # On value of line edit changed
     def __on_edit_value_changed(self):
         str_value = self.__ui_value_line_edit.text()
         value = float(str_value)
         self.__ui_slider.setValue(value)
-        setAttr(self.__field_name, value)
+        if not self.__preset_hovered:
+            setAttr(self.__field_name, value)
 
     # Generate the UI for the slider
     def generate_ui(self):
@@ -119,23 +121,35 @@ class FormSlider:
 
     # Refresh the UI
     def refresh_ui(self):
-        val = getAttr(self.__field_name)
-        if val >= self.__max:
-            self.__ui_slider.setMaximum(val * self.__mult)
-        self.__ui_slider.setValue(val * self.__mult)
-        self.__ui_value_line_edit.setText(str(round(val, 3)))
+        try:
+            val = getAttr(self.__field_name)
+            if val >= self.__max:
+                self.__ui_slider.setMaximum(val * self.__mult)
 
-        visible_layer = render_setup.instance().getVisibleRenderLayer()
-        is_default_layer = visible_layer.name() == "defaultRenderLayer"
-        self.__action_add_override.setEnabled(not is_default_layer and self.__override is None)
-        self.__action_remove_override.setEnabled(not is_default_layer and self.__override is not None)
+            hovered_preset = self.__control_room.get_hovered_preset()
+            if hovered_preset and hovered_preset.contains(self.__part_name, self.__key_preset):
+                self.__preset_hovered = True
+                val_displayed = hovered_preset.get(self.__part_name, self.__key_preset)
+                self.__ui_slider.setValue(val_displayed * self.__mult)
+                self.__ui_value_line_edit.setText(str(round(val_displayed,3)))
+                self.__preset_hovered = False
+            else:
+                self.__ui_slider.setValue(val * self.__mult)
+                self.__ui_value_line_edit.setText(str(round(val,3)))
 
-        stylesheet_bg = "background-color:" + cr.OVERRIDE_BG_COLOR if self.__override is not None else ""
-        stylesheet_lbl = self.__control_room.get_stylesheet_color_for_field(
-            self.__part_name, self.__key_preset, val, self.__override)
-        self.__ui_background_widget.setStyleSheet("QWidget#widget_form_slider{" + stylesheet_bg + "}")
-        self.__ui_lbl_widget.setStyleSheet("QLabel{" + stylesheet_lbl + "}")
-        self.__retrieve_override()
+            visible_layer = render_setup.instance().getVisibleRenderLayer()
+            is_default_layer = visible_layer.name() == "defaultRenderLayer"
+            self.__action_add_override.setEnabled(not is_default_layer and self.__override is None)
+            self.__action_remove_override.setEnabled(not is_default_layer and self.__override is not None)
+
+            stylesheet_bg = "background-color:" + cr.OVERRIDE_BG_COLOR if self.__override is not None else ""
+            stylesheet_lbl = self.__control_room.get_stylesheet_color_for_field(
+                self.__part_name, self.__key_preset, val, self.__override)
+            self.__ui_background_widget.setStyleSheet("QWidget#widget_form_slider{" + stylesheet_bg + "}")
+            self.__ui_lbl_widget.setStyleSheet("QLabel{" + stylesheet_lbl + "}")
+            self.__retrieve_override()
+        except:
+            pass
 
     # Add callbacks
     def add_callbacks(self):

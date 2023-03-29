@@ -1,0 +1,31 @@
+{
+    "name": "Mid",
+    "feature_overrides": {
+        "ignore_subdivision": false,
+        "ignore_displacement": false,
+        "ignore_motion": false,
+        "ignore_dof": false,
+        "ignore_aovs": true,
+        "output_denoising": false
+    },
+    "dof": {
+    },
+
+    "image_size": {
+        "width": 1920,
+        "height": 1080
+    },
+    "sampling": {
+        "camera_aa": 3,
+        "diffuse": 1,
+        "specular": 1,
+        "transmission": 1,
+        "sss": 1,
+        "indirect_vol": 1,
+        "ray_depth_diffuse": 2,
+        "ray_depth_specular": 2
+    },
+    "adaptive_sampling": {
+        "enable_adaptive_sampling": false
+    }
+}

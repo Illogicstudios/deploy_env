@@ -1,0 +1,29 @@
+{
+    "name": "High",
+    "feature_overrides": {
+        "ignore_subdivision": false,
+        "ignore_displacement": false,
+        "ignore_motion": false,
+        "ignore_dof": false
+    },
+    "dof": {
+    },
+    "motion_blur": {
+    },
+    "image_size": {
+        "width": 1920,
+        "height": 1080
+    },
+    "sampling": {
+        "camera_aa": 6,
+        "diffuse": 2,
+        "specular": 2,
+        "transmission": 2,
+        "sss": 2,
+        "indirect_vol": 2,
+        "ray_depth_diffuse": 2,
+        "ray_depth_specular": 2
+    },
+    "adaptive_sampling": {
+    }
+}
