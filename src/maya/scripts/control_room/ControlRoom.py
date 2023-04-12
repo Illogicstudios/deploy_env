@@ -190,10 +190,6 @@ class ControlRoom(QDialog):
         self.__hovered_preset = preset
         for part in self.__parts:
             part.refresh_ui()
-        if self.__hovered_preset is not None :
-            QApplication.setOverrideCursor(Qt.WhatsThisCursor)
-        else:
-            QApplication.restoreOverrideCursor()
 
     def get_hovered_preset(self):
         return self.__hovered_preset
