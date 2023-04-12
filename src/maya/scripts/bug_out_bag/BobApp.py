@@ -32,6 +32,7 @@ from tool_instances.ShapeRenamerTool import *
 from tool_instances.SplineStepTool import *
 from tool_instances.OverrideKillerTool import *
 from tool_instances.ShadingGroupRenamer import *
+from tool_instances.HierarchyCheckTool import *
 
 # ######################################################################################################################
 
@@ -70,6 +71,7 @@ class BobApp(QDialog):
                 ShapeRenamerTool(),
                 ShadingGroupRenamer(),
                 OverrideKillerTool(),
+                HierarchyCheckTool(),
             ]),
         ]
         self.__selected_category = 0

@@ -124,7 +124,6 @@ class TextureCheckDialog(QDialog):
         self.__ui_min_width = 400
         self.__ui_min_height = 300
         self.__ui_pos = QDesktopWidget().availableGeometry().center() - QPoint(self.__ui_width, self.__ui_height) / 2
-        self.__tab_widget = None
 
         # name the window
         self.setWindowTitle("Check Texture")

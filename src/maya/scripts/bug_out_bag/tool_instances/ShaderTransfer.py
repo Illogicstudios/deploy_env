@@ -5,7 +5,7 @@ from utils import *
 class ShaderTransfer(ActionTool):
 
     def __init__(self):
-        tooltip = "Select a 2 objects (first is the source and second is the target) then click Transfer"
+        tooltip = "Select 2 objects (first is the source and second is the target) then click Transfer"
         super().__init__(name="Shader Transfer", pref_name="shader_transfer_tool",
                          description="Transfer shading sets (need 2 selections)",
                          button_text="Transfer", tooltip=tooltip)
@@ -37,7 +37,6 @@ class ShaderTransfer(ActionTool):
     def on_selection_changed(self):
         self.__retrieve_selection()
         self.__refresh_btn()
-
 
     def populate(self):
         layout = super(ShaderTransfer, self).populate()
