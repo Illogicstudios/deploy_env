@@ -33,6 +33,7 @@ from tool_instances.SplineStepTool import *
 from tool_instances.OverrideKillerTool import *
 from tool_instances.ShadingGroupRenamer import *
 from tool_instances.HierarchyCheckTool import *
+from tool_instances.CharacterTimeSetTool import *
 
 # ######################################################################################################################
 
@@ -62,6 +63,7 @@ class BobApp(QDialog):
                 RestPosToVertexColorTool(),
                 UVCopierTool(),
                 SplineStepTool(),
+                CharacterTimeSetTool(),
             ]),
             BobCategory("Clean", self.__prefs, [
                 CleanFreezeTool(),

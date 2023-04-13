@@ -4,7 +4,6 @@ from tool_models.ActionTool import *
 class RestPosToVertexColorTool(ActionTool):
     @staticmethod
     def store_rest(obj):
-        print(obj)
         rest = "Pref"
         colorSets = polyColorSet(query=True, allColorSets=True)
 
