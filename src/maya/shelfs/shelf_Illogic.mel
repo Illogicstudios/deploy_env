@@ -116,7 +116,7 @@ global proc shelf_Illogic () {
         -manage 1
         -visible 1
         -preventOverride 0
-        -annotation "User Script" 
+        -annotation "Studio" 
         -enableBackground 0
         -backgroundColor 0 0 0 
         -highlightColor 0.321569 0.521569 0.65098 

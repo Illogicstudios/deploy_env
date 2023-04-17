@@ -22,39 +22,39 @@ class UVCopierTool(MultipleActionTool):
 
     def __current_uv_to_default(self):
         for shape in self.__selected_shapes:
-            default_uv = getAttr(shape.name() + ".uvSet[0].uvSetName")
+            default_uv = pm.getAttr(shape.name() + ".uvSet[0].uvSetName")
             try:
-                polyUVSet(shape, rename=True, newUVSet='map1', uvSet=default_uv)
+                pm.polyUVSet(shape, rename=True, newUVSet='map1', uvSet=default_uv)
             except:
                 pass
             try:
-                default_uv = getAttr(shape.name() + ".uvSet[0].uvSetName")
+                default_uv = pm.getAttr(shape.name() + ".uvSet[0].uvSetName")
                 # Get the current UV set
-                current_uv_set = polyUVSet(query=True, currentUVSet=True)[0]
+                current_uv_set = pm.polyUVSet(query=True, currentUVSet=True)[0]
 
-                uvs = polyListComponentConversion(shape, toUV=True)
+                uvs = pm.polyListComponentConversion(shape, toUV=True)
                 # Copy the current UV set to the default UV set
-                polyCopyUV(uvs, uvi=current_uv_set, uvs=default_uv)
+                pm.polyCopyUV(uvs, uvi=current_uv_set, uvs=default_uv)
 
                 # Delete all UV sets except the default
-                for uv_set in polyUVSet(shape, q=1, allUVSets=1):
+                for uv_set in pm.polyUVSet(shape, q=1, allUVSets=1):
                     if uv_set != "map1":
-                        polyUVSet(delete=True, uvSet=uv_set)
+                        pm.polyUVSet(delete=True, uvSet=uv_set)
             except:
                 print("Current UV Set to Default failed on %s" % shape.name())
 
     def __merge_all_uv(self):
         for shape in self.__selected_shapes:
-            default_uv = getAttr(shape+".uvSet[0].uvSetName")
-            all_uv_sets = polyUVSet(shape, q=1, allUVSets=1)
+            default_uv = pm.getAttr(shape+".uvSet[0].uvSetName")
+            all_uv_sets = pm.polyUVSet(shape, q=1, allUVSets=1)
             all_uv_sets.remove(default_uv)
             for uv_set in all_uv_sets:
-                polyUVSet(currentUVSet = True, uvSet=uv_set)
-                uvs = polyListComponentConversion(shape, toUV=True)
-                polyCopyUV( uvs, uvi= uv_set, uvs=default_uv )
-                polyUVSet( delete=True, uvSet=uv_set)
+                pm.polyUVSet(currentUVSet = True, uvSet=uv_set)
+                uvs = pm.polyListComponentConversion(shape, toUV=True)
+                pm.polyCopyUV( uvs, uvi= uv_set, uvs=default_uv )
+                pm.polyUVSet( delete=True, uvSet=uv_set)
             if default_uv != "map1":
-                polyUVSet(shape, rename=True, newUVSet='map1', uvSet=default_uv)
+                pm.polyUVSet(shape, rename=True, newUVSet='map1', uvSet=default_uv)
 
     def __refresh_btn(self):
         enabled = len(self.__selected_shapes) > 0
@@ -64,8 +64,8 @@ class UVCopierTool(MultipleActionTool):
             self._actions["merge"]["button"].setEnabled(enabled)
 
     def __retrieve_datas(self):
-        selection = ls(selection=True)
-        self.__selected_shapes = listRelatives(selection, allDescendents=True, shapes=True)
+        selection = pm.ls(selection=True)
+        self.__selected_shapes = pm.listRelatives(selection, allDescendents=True, shapes=True)
 
     # Refresh the button on selection changed
     def on_selection_changed(self):

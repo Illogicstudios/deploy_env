@@ -2,7 +2,7 @@ import json
 import base64
 import os.path
 
-from pymel.core import *
+import pymel.core as pm
 from utils import *
 from Preset import *
 
@@ -63,10 +63,9 @@ class PresetManager:
     # Retrieve the existing presets in the scene
     def retrieve_presets(self):
         self.clear()
-
-        if "presets" in fileInfo:
+        if "presets" in pm.fileInfo:
             found_active = False
-            json_presets = fileInfo["presets"].replace("\\\"", "\"")
+            json_presets = pm.fileInfo["presets"].replace("\\\"", "\"")
             try:
                 arr_json_presets = json.loads(json_presets)
                 for json_preset in arr_json_presets:
@@ -82,7 +81,7 @@ class PresetManager:
         arr_json_presets = []
         for preset in self.__presets:
             arr_json_presets.append(preset.to_preset_array())
-        fileInfo["presets"] = json.dumps(arr_json_presets)
+        pm.fileInfo["presets"] = json.dumps(arr_json_presets)
 
     # Getter of the presets
     def get_presets(self):

@@ -1,7 +1,7 @@
 import enum
 from ControlRoomPart import *
 from FormSlider import *
-from pymel.core import *
+import pymel.core as pm
 from functools import partial
 
 # Aspect Ratio datas
@@ -18,7 +18,7 @@ class ImageSizePart(ControlRoomPart):
     def __init__(self, control_room, part_name):
         super(ImageSizePart, self).__init__(control_room, "Image Size", part_name)
         self.__cam = None
-        for cam in ls(type="camera"):
+        for cam in pm.ls(type="camera"):
             if cam.renderable.get():
                 self.__cam = cam
                 break
@@ -138,7 +138,7 @@ class ImageSizePart(ControlRoomPart):
             self.__ratio_selected = None
         else:
             self.__ratio_selected = ratio
-            setAttr("defaultResolution.deviceAspectRatio", _AspectRatios[self.__ratio_selected]["ratio"])
+            pm.setAttr("defaultResolution.deviceAspectRatio", _AspectRatios[self.__ratio_selected]["ratio"])
             self.__update_height()
             self.__retrieve_aspect_ratio()
         self.refresh_ui()
@@ -146,7 +146,7 @@ class ImageSizePart(ControlRoomPart):
     # On click on a format button (SD and HD)
     def __on_click_format_btn(self, format):
         width = _AspectRatios[self.__ratio_selected][format]
-        setAttr("defaultResolution.width", width)
+        pm.setAttr("defaultResolution.width", width)
         self.__update_height()
         self.__retrieve_aspect_ratio()
         self.refresh_ui()
@@ -154,19 +154,19 @@ class ImageSizePart(ControlRoomPart):
     # Update the height
     def __update_height(self):
         if self.__ratio_selected is not None:
-            setAttr("defaultResolution.height",
-                    getAttr("defaultResolution.width") / _AspectRatios[self.__ratio_selected]["ratio"])
+            pm.setAttr("defaultResolution.height",
+                    pm.getAttr("defaultResolution.width") / _AspectRatios[self.__ratio_selected]["ratio"])
 
     # Update the width
     def __update_width(self):
         if self.__ratio_selected is not None:
-            setAttr("defaultResolution.width",
-                    getAttr("defaultResolution.height") * _AspectRatios[self.__ratio_selected]["ratio"])
+            pm.setAttr("defaultResolution.width",
+                    pm.getAttr("defaultResolution.height") * _AspectRatios[self.__ratio_selected]["ratio"])
 
     # Retrieve the aspect ratio
     def __retrieve_aspect_ratio(self):
         self.__ratio_selected = None
-        aspect_ratio = getAttr("defaultResolution.deviceAspectRatio")
+        aspect_ratio = pm.getAttr("defaultResolution.deviceAspectRatio")
         for name, aspect_ratio_datas in _AspectRatios.items():
             if abs(aspect_ratio - aspect_ratio_datas["ratio"]) < 0.001:
                 self.__ratio_selected = name
@@ -181,7 +181,7 @@ class ImageSizePart(ControlRoomPart):
 
     def refresh_ui(self):
         try:
-            width_retrieved = getAttr("defaultResolution.width")
+            width_retrieved = pm.getAttr("defaultResolution.width")
             stylesheet_lbl = self._control_room.get_stylesheet_color_for_field(
                 self._part_name, "width", width_retrieved)
 
@@ -197,7 +197,7 @@ class ImageSizePart(ControlRoomPart):
                 width_displayed = width_retrieved
                 self.__ui_width_edit.setText(str(width_retrieved))
 
-            height_retrieved = getAttr("defaultResolution.height")
+            height_retrieved = pm.getAttr("defaultResolution.height")
             stylesheet_lbl = self._control_room.get_stylesheet_color_for_field(
                 self._part_name, "height", height_retrieved)
             self.__ui_lbl_height.setStyleSheet("QLabel{"+stylesheet_lbl+"}")
@@ -284,13 +284,13 @@ class ImageSizePart(ControlRoomPart):
     # On line edit width changed
     def __on_width_changed(self):
         if not self._preset_hovered:
-            setAttr("defaultResolution.width", int(self.__ui_width_edit.text()))
+            pm.setAttr("defaultResolution.width", int(self.__ui_width_edit.text()))
             self.__update_height()
 
     # On line edit height changed
     def __on_height_changed(self):
         if not self._preset_hovered:
-            setAttr("defaultResolution.height", int(self.__ui_height_edit.text()))
+            pm.setAttr("defaultResolution.height", int(self.__ui_height_edit.text()))
             self.__update_width()
 
     # Callback that retrieve data and refresh UI
@@ -299,29 +299,29 @@ class ImageSizePart(ControlRoomPart):
         self.refresh_ui()
 
     def add_callbacks(self):
-        self.__width_callback = scriptJob(
+        self.__width_callback = pm.scriptJob(
             attributeChange=["defaultResolution.width", self.__callback])
-        self.__height_callback = scriptJob(
+        self.__height_callback = pm.scriptJob(
             attributeChange=["defaultResolution.height", self.__callback])
-        self.__aspect_ratio_callback = scriptJob(
+        self.__aspect_ratio_callback = pm.scriptJob(
             attributeChange=["defaultResolution.deviceAspectRatio", self.__callback])
 
     # Add dynamic callback for the camera
     def add_dynamic_callbacks(self):
         if self.__cam is not None:
-            self.__overscan_callback = scriptJob(
+            self.__overscan_callback = pm.scriptJob(
                 attributeChange=[self.__cam + '.overscan', self.__callback])
 
     def remove_callbacks(self):
-        scriptJob(kill=self.__width_callback)
-        scriptJob(kill=self.__height_callback)
-        scriptJob(kill=self.__aspect_ratio_callback)
+        pm.scriptJob(kill=self.__width_callback)
+        pm.scriptJob(kill=self.__height_callback)
+        pm.scriptJob(kill=self.__aspect_ratio_callback)
         self.remove_dynamic_callbacks()
 
     # Remove dynamic callback for the camera
     def remove_dynamic_callbacks(self):
         if self.__overscan_callback is not None:
-            scriptJob(kill=self.__overscan_callback)
+            pm.scriptJob(kill=self.__overscan_callback)
             self.__overscan_callback = None
 
     # retrieve the gate attributes
@@ -331,8 +331,8 @@ class ImageSizePart(ControlRoomPart):
             self.__is_gate_opaque = self.__cam.displayGateMaskOpacity.get() == 1.0
 
     def add_to_preset(self, preset):
-        preset.set(self._part_name, "width", getAttr("defaultResolution.width"))
-        preset.set(self._part_name, "height", getAttr("defaultResolution.height"))
+        preset.set(self._part_name, "width", pm.getAttr("defaultResolution.width"))
+        preset.set(self._part_name, "height", pm.getAttr("defaultResolution.height"))
         if self.__cam is not None:
             preset.set(self._part_name, "overscan", self.__cam.overscan.get())
             preset.set(self._part_name, "opaque_gate", self.__is_gate_opaque)
@@ -341,11 +341,12 @@ class ImageSizePart(ControlRoomPart):
     def apply(self, preset):
         if preset.contains(self._part_name, "width"):
             width = preset.get(self._part_name, "width")
-            setAttr("defaultResolution.width", width)
+            pm.setAttr("defaultResolution.width", width)
         if preset.contains(self._part_name, "height"):
             height = preset.get(self._part_name, "height")
-            setAttr("defaultResolution.height", height)
-        setAttr("defaultResolution.deviceAspectRatio", getAttr("defaultResolution.width") / getAttr("defaultResolution.height"))
+            pm.setAttr("defaultResolution.height", height)
+        pm.setAttr("defaultResolution.deviceAspectRatio",
+                   pm.getAttr("defaultResolution.width") / pm.getAttr("defaultResolution.height"))
         self.__retrieve_aspect_ratio()
         if self.__cam is not None:
             if preset.contains(self._part_name, "overscan"):

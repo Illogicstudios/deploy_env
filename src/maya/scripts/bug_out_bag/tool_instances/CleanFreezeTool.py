@@ -5,11 +5,11 @@ class CleanFreezeTool(ActionTool):
 
     @staticmethod
     def __get_transforms_selected():
-        selection = ls(selection=True, type="transform")
+        selection = pm.ls(selection=True, type="transform")
         selection_arr = []
         selection_arr.extend(selection)
         for sel in selection:
-            selection_arr.extend(listRelatives(sel, allDescendents=True, type="transform"))
+            selection_arr.extend(pm.listRelatives(sel, allDescendents=True, type="transform"))
         return selection_arr
 
     def __init__(self):
@@ -27,15 +27,15 @@ class CleanFreezeTool(ActionTool):
 
     def __freeze_transform(self):
         for item in self.__selection:
-            makeIdentity(item["transform"], apply=True)
+            pm.makeIdentity(item["transform"], apply=True)
 
     def __center_pivot(self):
         for item in self.__selection:
-            xform(item["transform"], pivots=(0, 0, 0), worldSpace=True)
+            pm.xform(item["transform"], pivots=(0, 0, 0), worldSpace=True)
 
     def __delete_history(self):
         for item in self.__selection:
-            delete(item["transform"], constructionHistory=True)
+            pm.delete(item["transform"], constructionHistory=True)
 
     def __retrieve_selection(self):
         selection = CleanFreezeTool.__get_transforms_selected()

@@ -1,4 +1,4 @@
-import enum
+from enum import Enum
 import maya.OpenMaya as OpenMaya
 
 from PySide2 import QtCore
@@ -8,6 +8,7 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 
+import pymel.core as pm
 from utils import *
 
 import ControlRoom as cr
@@ -69,7 +70,7 @@ class FormSlider:
             value = value / self.__mult
         self.__ui_value_line_edit.setText(str(value))
         if not self.__preset_hovered:
-            setAttr(self.__field_name, value)
+            pm.setAttr(self.__field_name, value)
 
     # On value of line edit changed
     def __on_edit_value_changed(self):
@@ -77,7 +78,7 @@ class FormSlider:
         value = float(str_value)
         self.__ui_slider.setValue(value)
         if not self.__preset_hovered:
-            setAttr(self.__field_name, value)
+            pm.setAttr(self.__field_name, value)
 
     # Generate the UI for the slider
     def generate_ui(self):
@@ -122,7 +123,7 @@ class FormSlider:
     # Refresh the UI
     def refresh_ui(self):
         try:
-            val = getAttr(self.__field_name)
+            val = pm.getAttr(self.__field_name)
             if val >= self.__max:
                 self.__ui_slider.setMaximum(val * self.__mult)
 
@@ -153,13 +154,13 @@ class FormSlider:
 
     # Add callbacks
     def add_callbacks(self):
-        self.__callback = scriptJob(attributeChange=[self.__field_name, self.refresh_ui])
-        self.__layer_callback = scriptJob(event=["renderLayerManagerChange", self.refresh_ui])
+        self.__callback = pm.scriptJob(attributeChange=[self.__field_name, self.refresh_ui])
+        self.__layer_callback = pm.scriptJob(event=["renderLayerManagerChange", self.refresh_ui])
 
     # remove callbacks
     def remove_callbacks(self):
-        scriptJob(kill=self.__callback)
-        scriptJob(kill=self.__layer_callback)
+        pm.scriptJob(kill=self.__callback)
+        pm.scriptJob(kill=self.__layer_callback)
 
     # Getter of the key preset and the field name
     def get_key_preset_and_field(self):

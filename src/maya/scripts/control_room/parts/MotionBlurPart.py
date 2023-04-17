@@ -1,6 +1,6 @@
 from ControlRoomPart import *
 from FormSlider import *
-from pymel.core import *
+import pymel.core as pm
 
 
 class MotionBlurPart(ControlRoomPart):
@@ -91,8 +91,8 @@ class MotionBlurPart(ControlRoomPart):
 
     def refresh_ui(self):
         try:
-            motion_blur_enable  = getAttr("defaultArnoldRenderOptions.motion_blur_enable")
-            ignore_motion_blur = getAttr("defaultArnoldRenderOptions.ignoreMotionBlur")
+            motion_blur_enable  = pm.getAttr("defaultArnoldRenderOptions.motion_blur_enable")
+            ignore_motion_blur = pm.getAttr("defaultArnoldRenderOptions.ignoreMotionBlur")
 
             hovered_preset = self._control_room.get_hovered_preset()
             if hovered_preset and hovered_preset.contains(self._part_name, "enable_motion_blur"):
@@ -138,42 +138,42 @@ class MotionBlurPart(ControlRoomPart):
     # On motion blur enable checkbox changed
     def __on_motion_blur_changed(self, state):
         if not self._preset_hovered:
-            setAttr("defaultArnoldRenderOptions.motion_blur_enable", state == 2)
+            pm.setAttr("defaultArnoldRenderOptions.motion_blur_enable", state == 2)
 
     # On instant shutter checkbox changed
     def __on_instant_shutter_changed(self, state):
         if not self._preset_hovered:
-            setAttr("defaultArnoldRenderOptions.ignoreMotionBlur", state == 2)
+            pm.setAttr("defaultArnoldRenderOptions.ignoreMotionBlur", state == 2)
 
     def add_callbacks(self):
-        self.__motion_blur_callback = scriptJob(
+        self.__motion_blur_callback = pm.scriptJob(
             attributeChange=["defaultArnoldRenderOptions.motion_blur_enable", self.refresh_ui])
-        self.__instant_shutter_callback = scriptJob(
+        self.__instant_shutter_callback = pm.scriptJob(
             attributeChange=["defaultArnoldRenderOptions.ignoreMotionBlur", self.refresh_ui])
         for fs in self.__form_sliders:
             fs.add_callbacks()
-        self.__layer_callback = scriptJob(event=["renderLayerManagerChange", self.refresh_ui])
+        self.__layer_callback = pm.scriptJob(event=["renderLayerManagerChange", self.refresh_ui])
 
     def remove_callbacks(self):
-        scriptJob(kill=self.__motion_blur_callback)
-        scriptJob(kill=self.__instant_shutter_callback)
+        pm.scriptJob(kill=self.__motion_blur_callback)
+        pm.scriptJob(kill=self.__instant_shutter_callback)
         for fs in self.__form_sliders:
             fs.remove_callbacks()
-        scriptJob(kill=self.__layer_callback)
+        pm.scriptJob(kill=self.__layer_callback)
 
     def add_to_preset(self, preset):
-        preset.set(self._part_name, "enable_motion_blur", getAttr("defaultArnoldRenderOptions.motion_blur_enable"))
-        preset.set(self._part_name, "instant_shutter", getAttr("defaultArnoldRenderOptions.ignoreMotionBlur"))
+        preset.set(self._part_name, "enable_motion_blur", pm.getAttr("defaultArnoldRenderOptions.motion_blur_enable"))
+        preset.set(self._part_name, "instant_shutter", pm.getAttr("defaultArnoldRenderOptions.ignoreMotionBlur"))
         for fs in self.__form_sliders:
             key, field = fs.get_key_preset_and_field()
-            preset.set(self._part_name, key, getAttr(field))
+            preset.set(self._part_name, key, pm.getAttr(field))
 
     def apply(self, preset):
         if preset.contains(self._part_name, "enable_motion_blur"):
-            setAttr("defaultArnoldRenderOptions.motion_blur_enable", preset.get(self._part_name, "enable_motion_blur"))
+            pm.setAttr("defaultArnoldRenderOptions.motion_blur_enable", preset.get(self._part_name, "enable_motion_blur"))
         if preset.contains(self._part_name, "instant_shutter"):
-            setAttr("defaultArnoldRenderOptions.ignoreMotionBlur", preset.get(self._part_name, "instant_shutter"))
+            pm.setAttr("defaultArnoldRenderOptions.ignoreMotionBlur", preset.get(self._part_name, "instant_shutter"))
         for fs in self.__form_sliders:
             key, field = fs.get_key_preset_and_field()
             if preset.contains(self._part_name, key):
-                setAttr(field, preset.get(self._part_name, key))
+                pm.setAttr(field, preset.get(self._part_name, key))

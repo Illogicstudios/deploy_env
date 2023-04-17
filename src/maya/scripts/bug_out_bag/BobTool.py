@@ -3,7 +3,7 @@ from PySide2 import QtWidgets
 from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 
-from pymel.core import *
+import pymel.core as pm
 
 from BobElement import *
 from BobCollapsibleWidget import *

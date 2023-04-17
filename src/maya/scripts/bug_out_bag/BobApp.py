@@ -3,7 +3,7 @@ import sys
 
 from functools import partial
 
-from pymel.core import *
+import pymel.core as pm
 import maya.OpenMayaUI as omui
 import maya.OpenMaya as OpenMaya
 

@@ -5,16 +5,16 @@ class RestPosToVertexColorTool(ActionTool):
     @staticmethod
     def store_rest(obj):
         rest = "Pref"
-        colorSets = polyColorSet(query=True, allColorSets=True)
+        colorSets = pm.polyColorSet(query=True, allColorSets=True)
 
         if not colorSets or not rest in colorSets:
-            polyColorSet(create=True, colorSet=rest, clamped=False, rpt="RGB")
-        polyColorSet(obj, currentColorSet=True, colorSet=rest)
+            pm.polyColorSet(create=True, colorSet=rest, clamped=False, rpt="RGB")
+        pm.polyColorSet(obj, currentColorSet=True, colorSet=rest)
         verts = obj.verts
         for v in verts:
-            pos = xform(v, q=True, ws=True, t=True)
-            select(v)
-            polyColorPerVertex(rgb=pos)
+            pos = pm.xform(v, q=True, ws=True, t=True)
+            pm.select(v)
+            pm.polyColorPerVertex(rgb=pos)
         obj.aiExportColors.set(1)
 
     def __init__(self):
@@ -26,15 +26,15 @@ class RestPosToVertexColorTool(ActionTool):
         selection = self.__selection
         for elem in selection:
             RestPosToVertexColorTool.store_rest(elem)
-        select(selection)
+        pm.select(selection)
 
     # Refresh the button
     def __refresh_btn(self):
         self._action_btn.setEnabled(len(self.__selection) > 0)
 
     def __retrieve_selection(self):
-        transform = ls(sl=True)
-        self.__selection = listRelatives(transform, ad=True, type="mesh")
+        transform = pm.ls(sl=True)
+        self.__selection = pm.listRelatives(transform, ad=True, type="mesh")
 
     # Refresh the button on selection changed
     def on_selection_changed(self):

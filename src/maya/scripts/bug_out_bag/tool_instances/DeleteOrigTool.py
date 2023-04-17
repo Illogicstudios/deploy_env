@@ -16,15 +16,15 @@ class DeleteOrigTool(ActionTool):
                         and node.intermediateObject.get() \
                         and node.referenceFile() is None:
                     unused_intermediate_objects.append(node)
-            delete(unused_intermediate_objects)
+            pm.delete(unused_intermediate_objects)
 
     # Refresh the button
     def __refresh_btn(self):
         self._action_btn.setEnabled(len(self.__selection) > 0)
 
     def __retrieve_selection(self):
-        selection = ls(sl=True)
-        self.__selection = listRelatives(selection,shapes=True, allDescendents=True, type="mesh")
+        selection = pm.ls(sl=True)
+        self.__selection = pm.listRelatives(selection,shapes=True, allDescendents=True, type="mesh")
 
     # Refresh the button on selection changed
     def on_selection_changed(self):

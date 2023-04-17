@@ -4,7 +4,7 @@ import re
 from functools import partial
 
 import maya.OpenMaya as OpenMaya
-from pymel.core import *
+import pymel.core as pm
 
 from ControlRoomPart import *
 from FormSlider import *
@@ -104,7 +104,7 @@ class PresetFilterDialog(QDialog):
             pass
 
     def __refresh_btn(self):
-        self.__ui_submit_btn.setEnabled(len(self.__fields_selected)>0)
+        self.__ui_submit_btn.setEnabled(len(self.__fields_selected) > 0)
 
     def __on_selection_field_changed(self):
         self.__fields_selected.clear()
@@ -116,11 +116,13 @@ class PresetFilterDialog(QDialog):
         self.__preset.filter(self.__fields_selected)
         self.accept()
 
+
 class EventFilterPreset(QObject):
     def __init__(self, control_room, preset):
         super().__init__()
         self.__control_room = control_room
         self.__preset = preset
+
     def eventFilter(self, object, event):
         if event.type() == QtCore.QEvent.Enter:
             self.__control_room.set_hovered_preset(self.__preset)
@@ -129,6 +131,7 @@ class EventFilterPreset(QObject):
             self.__control_room.set_hovered_preset(None)
             return True
         return False
+
 
 class PresetsPart(ControlRoomPart):
 
@@ -227,7 +230,7 @@ class PresetsPart(ControlRoomPart):
 
     # Generate a new preset
     def __generate_new_preset(self):
-        result = promptDialog(
+        result = pm.promptDialog(
             title='New Preset',
             message='Enter the name:',
             button=['OK', 'Cancel'],
@@ -236,7 +239,7 @@ class PresetsPart(ControlRoomPart):
             dismissString='Cancel')
         if result == 'OK':
             preset_manager = PresetManager.get_instance()
-            name = promptDialog(query=True, text=True)
+            name = pm.promptDialog(query=True, text=True)
             if not re.match(r"^\w+$", name):
                 print_warning(["\"" + name + "\" is a bad preset name", "The preset has not been created"])
                 return
@@ -248,7 +251,7 @@ class PresetsPart(ControlRoomPart):
 
     # Delete the preset
     def __delete_preset(self, preset):
-        answer_delete = confirmDialog(
+        answer_delete = pm.confirmDialog(
             title='Confirm',
             message="Are you sure to delete the preset " + preset.get_name() + " ?",
             button=['Yes', 'No'],
@@ -270,10 +273,10 @@ class PresetsPart(ControlRoomPart):
         self.refresh_ui()
 
     def add_callbacks(self):
-        self.__maya_callback = scriptJob(event=["SceneOpened", self.__callback_scene_opened])
+        self.__maya_callback = pm.scriptJob(event=["SceneOpened", self.__callback_scene_opened])
 
     def remove_callbacks(self):
-        scriptJob(kill=self.__maya_callback)
+        pm.scriptJob(kill=self.__maya_callback)
 
     def add_to_preset(self, preset):
         # Nothing

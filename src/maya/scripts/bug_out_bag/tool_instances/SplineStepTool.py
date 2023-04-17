@@ -30,25 +30,25 @@ class SplineStepTool(MultipleActionTool):
         self.__selected = []
 
     def __step(self):
-        keyTangent(g=True, inTangentType="linear", outTangentType="step")
+        pm.keyTangent(g=True, inTangentType="linear", outTangentType="step")
         self.__refresh_btn()
 
     def __spline(self):
-        keyTangent(g=True, inTangentType="auto", outTangentType="auto")
+        pm.keyTangent(g=True, inTangentType="auto", outTangentType="auto")
         self.__refresh_btn()
 
     def __keys_to_step(self):
-        selectKey(self.__selected)
-        keyTangent(outTangentType ="step")
+        pm.selectKey(self.__selected)
+        pm.keyTangent(outTangentType ="step")
         self.__refresh_btn()
 
     def __keys_to_spline(self):
-        selectKey(self.__selected)
-        keyTangent(outTangentType ="auto", inTangentType ="auto")
+        pm.selectKey(self.__selected)
+        pm.keyTangent(outTangentType ="auto", inTangentType ="auto")
         self.__refresh_btn()
 
     def __refresh_btn(self):
-        in_tangent, out_tangent, weighted_tangent = keyTangent(g=True, query=True)
+        in_tangent, out_tangent, weighted_tangent = pm.keyTangent(g=True, query=True)
         stepped_enabled = in_tangent != "linear" or out_tangent != "step"
         spline_enabled = in_tangent != "auto" or out_tangent != "auto"
         keys_btn_enabled = len(self.__selected)>0
@@ -62,8 +62,8 @@ class SplineStepTool(MultipleActionTool):
             self._actions["keyframe_spline"]["button"].setEnabled(keys_btn_enabled)
 
     def __retrieve_datas(self):
-        self.__selected = ls(selection=True)
-        self.__selected.extend(listRelatives(allDescendents=True,type="transform"))
+        self.__selected = pm.ls(selection=True)
+        self.__selected.extend(pm.listRelatives(allDescendents=True,type="transform"))
 
     def on_selection_changed(self):
         self.__retrieve_datas()

@@ -101,7 +101,7 @@ class TextureCheckTool(ActionTool):
 
     # Refresh the button
     def __refresh_btn(self):
-        self._action_btn.setEnabled(not self.__dialog_opened and len(ls(type="file")) > 0)
+        self._action_btn.setEnabled(not self.__dialog_opened and len(pm.ls(type="file")) > 0)
 
     # Refresh the button on selection changed
     def on_selection_changed(self):
@@ -148,14 +148,14 @@ class TextureCheckDialog(QDialog):
 
     # On file node created refresh the datas and the ui of its filepath
     def __on_file_created(self, *args, **kwargs):
-        select(OpenMaya.MFnDependencyNode(args[0]).name())
-        filepath = ls(selection=True)[0].fileTextureName.get()
+        pm.select(OpenMaya.MFnDependencyNode(args[0]).name())
+        filepath = pm.ls(selection=True)[0].fileTextureName.get()
         self.__on_node_changed(filepath)
 
     # On file node deleted refresh the datas and the ui of its filepath
     def __on_file_deleted(self, *args, **kwargs):
-        select(OpenMaya.MFnDependencyNode(args[0]).name())
-        filepath = ls(selection=True)[0].fileTextureName.get()
+        pm.select(OpenMaya.MFnDependencyNode(args[0]).name())
+        filepath = pm.ls(selection=True)[0].fileTextureName.get()
         self.__on_node_changed(filepath)
 
     # create the callbacks
@@ -195,7 +195,7 @@ class TextureCheckDialog(QDialog):
     # build datas of bad textures
     def build_bad_cs(self, test_call=False):
         bad_cs_tex = {}
-        textures_file = ls(type="file")
+        textures_file = pm.ls(type="file")
         distinct_filepath = []
         for tex in textures_file:
             filepath = tex.fileTextureName.get()
@@ -209,7 +209,7 @@ class TextureCheckDialog(QDialog):
 
     # build datas of bad textures for a filepath
     def build_bad_cs_tex(self, bad_cs_tex, filepath, test_call=False):
-        textures_file = ls(type="file")
+        textures_file = pm.ls(type="file")
 
         # Initiate all the known colorspaces fields in the dict
         bad_cs_tex[filepath] = {"colorspaces": {}, "unknown_colorspaces": {}}
@@ -221,9 +221,9 @@ class TextureCheckDialog(QDialog):
             retrieved_filepath = tex.fileTextureName.get()
             if filepath == retrieved_filepath:
                 if not test_call:
-                    self.__script_jobs.append(scriptJob(
+                    self.__script_jobs.append(pm.scriptJob(
                         attributeChange=[tex + ".fileTextureName", partial(self.__on_node_changed, filepath)]))
-                    self.__script_jobs.append(scriptJob(
+                    self.__script_jobs.append(pm.scriptJob(
                         attributeChange=[tex + ".colorSpace", partial(self.__on_node_changed, filepath)]))
 
                 # Get the colorspace of the file node
@@ -255,7 +255,7 @@ class TextureCheckDialog(QDialog):
     # Clear all script jobs linked to filenode
     def __clear_script_jobs(self):
         for sj in self.__script_jobs:
-            evalDeferred(partial(scriptJob, kill=sj, force=True))
+            pm.evalDeferred(partial(pm.scriptJob, kill=sj, force=True))
         self.__script_jobs.clear()
 
     # Select the filenodes corresponding to the row in table
@@ -263,7 +263,7 @@ class TextureCheckDialog(QDialog):
         selection = []
         for s in self.__ui_file_cs_table.selectionModel().selectedRows():
             selection.extend(self.__ui_file_cs_table.item(s.row(), 0).data(Qt.UserRole))
-        select(selection)
+        pm.select(selection)
 
     # Create the ui
     def __create_ui(self):

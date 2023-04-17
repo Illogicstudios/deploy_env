@@ -10,8 +10,8 @@ class CharacterTimeSetTool(ActionTool):
 
     def __retrieve_selection(self):
         self.__selection.clear()
-        for sl in ls(selection=True, type="transform"):
-            standin = listRelatives(sl, type="aiStandIn")
+        for sl in pm.ls(selection=True, type="transform"):
+            standin = pm.listRelatives(sl, type="aiStandIn")
             if len(standin) > 0:
                 self.__selection.extend(standin)
 
@@ -26,9 +26,9 @@ class CharacterTimeSetTool(ActionTool):
 
     def _action(self):
         for standin in self.__selection:
-            addAttr(standin, longName ="mtoa_constant_anim_time",
+            pm.addAttr(standin, longName ="mtoa_constant_anim_time",
                     attributeType ="double", keyable=1, defaultValue =0)
-            expression(string=standin+".mtoa_constant_anim_time = time;",
+            pm.expression(string=standin+".mtoa_constant_anim_time = time;",
                        object=standin, alwaysEvaluate=True, unitConversion="all")
 
     def populate(self):

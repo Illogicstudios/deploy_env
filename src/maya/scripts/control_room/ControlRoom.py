@@ -3,7 +3,7 @@ from functools import partial
 
 import sys
 
-from pymel.core import *
+import pymel.core as pm
 import maya.OpenMayaUI as omui
 
 from PySide2 import QtCore
@@ -122,7 +122,7 @@ class ControlRoom(QDialog):
     # Test if Arnold is loaded and display a warning popup if it is not
     @staticmethod
     def test_arnold_renderer():
-        arnold_renderer_loaded = objExists("defaultArnoldRenderOptions")
+        arnold_renderer_loaded = pm.objExists("defaultArnoldRenderOptions")
         if not arnold_renderer_loaded:
             msg = QMessageBox()
             msg.setWindowTitle("Error Control Room with Arnold Renderer")
@@ -212,7 +212,7 @@ class ControlRoom(QDialog):
 
     # Add the callbacks of all parts
     def __add_callbacks(self):
-        self.__new_scene_callback = scriptJob(runOnce=True, event=["SceneOpened", self.on_new_scene])
+        self.__new_scene_callback = pm.scriptJob(runOnce=True, event=["SceneOpened", self.on_new_scene])
         for part in self.__parts:
             part.add_callbacks()
         self.__preset_part.add_callbacks()

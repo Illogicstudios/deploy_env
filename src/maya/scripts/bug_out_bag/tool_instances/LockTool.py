@@ -27,14 +27,14 @@ class LockTool(MultipleActionTool):
         return layout
 
     def __get_transforms_selected(self):
-        selection = ls(selection=True, type="transform")
+        selection = pm.ls(selection=True, type="transform")
         if self.__ignore_root:
             transforms = []
         else:
             transforms = selection
         if self.__select_children:
             for sel in selection:
-                transforms.extend(listRelatives(sel, allDescendents=True, type="transform"))
+                transforms.extend(pm.listRelatives(sel, allDescendents=True, type="transform"))
         return transforms
 
     def __lock_selection(self):

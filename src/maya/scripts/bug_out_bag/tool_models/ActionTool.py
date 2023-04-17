@@ -13,9 +13,9 @@ class ActionTool(BobTool, ABC):
         pass
 
     def __action_with_chunks(self):
-        undoInfo(openChunk=True)
+        pm.undoInfo(openChunk=True)
         self._action()
-        undoInfo(closeChunk=True)
+        pm.undoInfo(closeChunk=True)
 
     def populate(self):
         layout = super().populate()

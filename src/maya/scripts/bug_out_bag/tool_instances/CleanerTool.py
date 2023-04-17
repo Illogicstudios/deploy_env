@@ -37,8 +37,8 @@ class CleanerTool(RoutineTool):
     @staticmethod
     def __optimize_scene_size():
         print("\nvvvvvvvvvvvvvvvv Optimize Scene Size vvvvvvvvvvvvvvvv")
-        mel.source('cleanUpScene')
-        mel.scOpt_performOneCleanup({
+        pm.mel.source('cleanUpScene')
+        pm.mel.scOpt_performOneCleanup({
             "nurbsSrfOption",
             "setsOption",
             "transformOption",
@@ -62,10 +62,10 @@ class CleanerTool(RoutineTool):
     @staticmethod
     def __delete_unknown_node():
         print("\nvvvvvvvvvvvvvvv Delete Unknown Nodes vvvvvvvvvvvvvvvv")
-        unknown = ls(type="unknown")
+        unknown = pm.ls(type="unknown")
         if unknown:
             print("Removing:" + unknown)
-            delete(unknown)
+            pm.delete(unknown)
         else:
             print("No unknown nodes found")
         print("^^^^^^^^^^^^^^^ Delete Unknown Nodes ^^^^^^^^^^^^^^^^\n")
@@ -73,12 +73,12 @@ class CleanerTool(RoutineTool):
     @staticmethod
     def __remove_unknown_plugins():
         print("\nvvvvvvvvvvvvvv Remove Unknown Plugins vvvvvvvvvvvvvvv")
-        old_plug = cmds.unknownPlugin(query=True, list=True)
+        old_plug = pm.unknownPlugin(query=True, list=True)
         if old_plug:
             for plug in old_plug:
                 print("Removing:" + plug)
                 try:
-                    cmds.unknownPlugin(plug, remove=True)
+                    pm.unknownPlugin(plug, remove=True)
                 except Exception as e:
                     print(e)
         else:
@@ -88,26 +88,26 @@ class CleanerTool(RoutineTool):
     @staticmethod
     def __unlock_all_nodes():
         print("\n------------------ Unlock All Nodes -----------------\n")
-        all_nodes = ls()
+        all_nodes = pm.ls()
         if all_nodes:
             for node in all_nodes:
-                lockNode(node, l=False)
+                pm.lockNode(node, l=False)
 
     @staticmethod
     def __remove_blast_panel_error():
         print("\n------------ Remove CgAbBlastPanel Error ------------\n")
-        for model_panel in getPanel(typ="modelPanel"):
+        for model_panel in pm.getPanel(typ="modelPanel"):
             # Get callback of the model editor
-            callback = modelEditor(model_panel, query=True, editorChanged=True)
+            callback = pm.modelEditor(model_panel, query=True, editorChanged=True)
             # If the callback is the erroneous `CgAbBlastPanelOptChangeCallback`
             if callback == "CgAbBlastPanelOptChangeCallback":
                 # Remove the callbacks from the editor
-                modelEditor(model_panel, edit=True, editorChanged="")
-        if objExists("uiConfigurationScriptNode"):
-            delete("uiConfigurationScriptNode")
+                pm.modelEditor(model_panel, edit=True, editorChanged="")
+        if pm.objExists("uiConfigurationScriptNode"):
+            pm.delete("uiConfigurationScriptNode")
 
     @staticmethod
     def __fix_isg():
         print("\n-------------- Fix initialShadingGroup --------------\n")
-        lockNode('initialShadingGroup', lock=0, lockUnpublished=0)
-        lockNode('initialParticleSE', lock=0, lockUnpublished=0)
+        pm.lockNode('initialShadingGroup', lock=0, lockUnpublished=0)
+        pm.lockNode('initialParticleSE', lock=0, lockUnpublished=0)

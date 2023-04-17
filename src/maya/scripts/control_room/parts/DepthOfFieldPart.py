@@ -1,7 +1,7 @@
 import ControlRoom as cr
 from ControlRoom import *
 from ControlRoomPart import *
-from pymel.core import *
+import pymel.core as pm
 
 
 class DepthOfFieldPart(ControlRoomPart):
@@ -9,7 +9,7 @@ class DepthOfFieldPart(ControlRoomPart):
         super(DepthOfFieldPart, self).__init__(control_room, "Depth of Field", part_name)
         self.__no_refresh = False
         self.__cam = None
-        for cam in ls(type="camera"):
+        for cam in pm.ls(type="camera"):
             if cam.renderable.get():
                 self.__cam = cam
                 break
@@ -98,18 +98,18 @@ class DepthOfFieldPart(ControlRoomPart):
     # Add callbacks to the current camera
     def add_dynamic_callbacks(self):
         if self.__cam is not None:
-            self.__camera_dof_callback = scriptJob(
+            self.__camera_dof_callback = pm.scriptJob(
                 attributeChange=[self.__cam + '.depthOfField', self.refresh_ui])
-            self.__camera_fstop_callback = scriptJob(
+            self.__camera_fstop_callback = pm.scriptJob(
                 attributeChange=[self.__cam + '.fStop', self.refresh_ui])
 
     # Remove the callbacks from the current camera
     def remove_callbacks(self):
         if self.__camera_dof_callback is not None:
-            scriptJob(kill=self.__camera_dof_callback)
+            pm.scriptJob(kill=self.__camera_dof_callback)
             self.__camera_dof_callback = None
         if self.__camera_fstop_callback is not None:
-            scriptJob(kill=self.__camera_fstop_callback)
+            pm.scriptJob(kill=self.__camera_fstop_callback)
             self.__camera_fstop_callback = None
 
     def add_to_preset(self, preset):

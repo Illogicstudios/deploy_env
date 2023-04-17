@@ -90,7 +90,7 @@ class HierarchyCheckVisualizeer(QDialog):
     def __on_object_selected(self, list_to_clear, item, previous):
         if item is not None:
             list_to_clear.setCurrentItem(None)
-            select(item.data(Qt.UserRole))
+            pm.select(item.data(Qt.UserRole))
 
 
 class HierarchyCheckTool(ActionTool):
@@ -108,9 +108,9 @@ class HierarchyCheckTool(ActionTool):
             obj_diff_1 = []
             obj_diff_2 = []
             children_data_1 = {child_1.name().split("|")[-1]: child_1 for child_1 in
-                               listRelatives(obj_1, children=True)}
+                               pm.listRelatives(obj_1, children=True)}
             children_data_2 = {child_2.name().split("|")[-1]: child_2 for child_2 in
-                               listRelatives(obj_2, children=True)}
+                               pm.listRelatives(obj_2, children=True)}
             children_name_1 = list(children_data_1.keys())
             children_name_1_copy = children_name_1.copy()
             children_name_2 = list(children_data_2.keys())
@@ -192,7 +192,7 @@ class HierarchyCheckTool(ActionTool):
         self._action_btn.setEnabled(len(self.__selection) >= 2)
 
     def __retrieve_selection(self):
-        self.__selection = ls(sl=True)
+        self.__selection = pm.ls(sl=True)
 
     # Refresh the button on selection changed
     def on_selection_changed(self):

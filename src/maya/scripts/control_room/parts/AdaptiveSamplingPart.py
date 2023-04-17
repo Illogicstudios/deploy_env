@@ -1,6 +1,6 @@
 from ControlRoomPart import *
 from FormSlider import *
-from pymel.core import *
+import pymel.core as pm
 
 
 class AdaptiveSamplingPart(ControlRoomPart):
@@ -60,7 +60,7 @@ class AdaptiveSamplingPart(ControlRoomPart):
 
     def refresh_ui(self):
         try:
-            adaptive_sampling_enabled = getAttr("defaultArnoldRenderOptions.enableAdaptiveSampling")
+            adaptive_sampling_enabled = pm.getAttr("defaultArnoldRenderOptions.enableAdaptiveSampling")
             for fs in self.__form_sliders:
                 fs.refresh_ui()
 
@@ -91,31 +91,31 @@ class AdaptiveSamplingPart(ControlRoomPart):
     # On checkbox enable adaptive sampling changed
     def __on_enable_changed(self, state):
         if not self._preset_hovered:
-            setAttr("defaultArnoldRenderOptions.enableAdaptiveSampling", state == 2)
+            pm.setAttr("defaultArnoldRenderOptions.enableAdaptiveSampling", state == 2)
 
     def add_callbacks(self):
-        self.__enable_callback = scriptJob(
+        self.__enable_callback = pm.scriptJob(
             attributeChange=["defaultArnoldRenderOptions.enableAdaptiveSampling", self.refresh_ui])
         for fs in self.__form_sliders:
             fs.add_callbacks()
-        self.__layer_callback = scriptJob(event=["renderLayerManagerChange", self.refresh_ui])
+        self.__layer_callback = pm.scriptJob(event=["renderLayerManagerChange", self.refresh_ui])
 
     def remove_callbacks(self):
-        scriptJob(kill=self.__enable_callback)
+        pm.scriptJob(kill=self.__enable_callback)
         for fs in self.__form_sliders:
             fs.remove_callbacks()
-        scriptJob(kill=self.__layer_callback)
+        pm.scriptJob(kill=self.__layer_callback)
 
     def add_to_preset(self, preset):
-        preset.set(self._part_name, "enable_adaptive_sampling", getAttr("defaultArnoldRenderOptions.enableAdaptiveSampling"))
+        preset.set(self._part_name, "enable_adaptive_sampling", pm.getAttr("defaultArnoldRenderOptions.enableAdaptiveSampling"))
         for fs in self.__form_sliders:
             key, field = fs.get_key_preset_and_field()
-            preset.set(self._part_name, key, getAttr(field))
+            preset.set(self._part_name, key, pm.getAttr(field))
 
     def apply(self, preset):
         if preset.contains(self._part_name, "enable_adaptive_sampling"):
-            setAttr("defaultArnoldRenderOptions.enableAdaptiveSampling", preset.get(self._part_name, "enable_adaptive_sampling"))
+            pm.setAttr("defaultArnoldRenderOptions.enableAdaptiveSampling", preset.get(self._part_name, "enable_adaptive_sampling"))
         for fs in self.__form_sliders:
             key, field = fs.get_key_preset_and_field()
             if preset.contains(self._part_name, key):
-                setAttr(field, preset.get(self._part_name, key))
+                pm.setAttr(field, preset.get(self._part_name, key))

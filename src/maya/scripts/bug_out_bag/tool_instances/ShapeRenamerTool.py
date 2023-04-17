@@ -9,12 +9,12 @@ class ShapeRenamerTool(ActionTool):
 
     def _action(self):
         for data in self.__selection:
-            rename(data["shapes"][0],data["transform"].name()+"Shape")
+            pm.rename(data["shapes"][0],data["transform"].name()+"Shape")
 
     def __retrieve_selection(self):
         self.__selection = []
-        for sl in ls(selection=True, type="transform"):
-            shapes = listRelatives(sl, shapes=True)
+        for sl in pm.ls(selection=True, type="transform"):
+            shapes = pm.listRelatives(sl, shapes=True)
             if len(shapes) > 0:
                 self.__selection.append({"transform": sl, "shapes": shapes})
 

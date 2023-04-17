@@ -8,7 +8,7 @@ class ShadingGroupRenamer(ActionTool):
 
     def _action(self):
         # Get all shading groups in the scene
-        shading_groups = ls(type='shadingEngine')
+        shading_groups = pm.ls(type='shadingEngine')
 
         # Iterate through shading groups
         for sg in shading_groups:

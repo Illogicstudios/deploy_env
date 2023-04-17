@@ -1,7 +1,7 @@
 import ControlRoom as cr
 from ControlRoom import *
 from ControlRoomPart import *
-from pymel.core import *
+import pymel.core as pm
 
 
 class IgnoreFields:
@@ -40,7 +40,7 @@ class IgnoreFields:
     # On checkbox changed
     def __on_state_changed(self, state):
         if not self.__preset_hovered:
-            setAttr(self.__field_name, state == 2)
+            pm.setAttr(self.__field_name, state == 2)
 
     # Getter of the key preset and the field
     def get_key_preset_and_field(self):
@@ -81,12 +81,12 @@ class IgnoreFields:
             pass
 
     def add_callback(self):
-        self.__callback = scriptJob(attributeChange=[self.__field_name, self.refresh_checkbox])
-        self.__layer_callback = scriptJob(event=["renderLayerManagerChange", self.refresh_checkbox])
+        self.__callback = pm.scriptJob(attributeChange=[self.__field_name, self.refresh_checkbox])
+        self.__layer_callback = pm.scriptJob(event=["renderLayerManagerChange", self.refresh_checkbox])
 
     def remove_callback(self):
-        scriptJob(kill=self.__callback)
-        scriptJob(kill=self.__layer_callback)
+        pm.scriptJob(kill=self.__callback)
+        pm.scriptJob(kill=self.__layer_callback)
 
 
 class FeatureOverridesPart(ControlRoomPart):
@@ -126,7 +126,7 @@ class FeatureOverridesPart(ControlRoomPart):
 
         # Ignore AOVs
         self.__ui_ignore_aovs_cb = QCheckBox("AOVs Batch Only")
-        self.__ignore_aovs = getAttr("defaultArnoldRenderOptions.aovMode") == 2
+        self.__ignore_aovs = pm.getAttr("defaultArnoldRenderOptions.aovMode") == 2
         self.__ui_ignore_aovs_cb.setChecked(self.__ignore_aovs)
         self.__ui_ignore_aovs_cb.stateChanged.connect(self.__on_state_changed_ignore_aovs)
         self.__ui_ignore_aovs_cb.setChecked(self.__ignore_aovs)
@@ -167,7 +167,7 @@ class FeatureOverridesPart(ControlRoomPart):
 
     # Refresh the output denoising aov field
     def __refresh_output_denoising_aov(self):
-        checked = ls("defaultArnoldRenderOptions")[0].outputVarianceAOVs.get()
+        checked = pm.ls("defaultArnoldRenderOptions")[0].outputVarianceAOVs.get()
         stylesheet_lbl = self._control_room.get_stylesheet_color_for_field(
             self._part_name, "output_denoising", checked)
         self.__ui_output_denoising_aovs_cb.setStyleSheet("QCheckBox{" + stylesheet_lbl + "}")
@@ -184,37 +184,37 @@ class FeatureOverridesPart(ControlRoomPart):
     def __on_state_changed_ignore_aovs(self, state):
         if not self._preset_hovered:
             self.__ignore_aovs = state == 2
-            setAttr("defaultArnoldRenderOptions.aovMode", 2 if self.__ignore_aovs else 1)
+            pm.setAttr("defaultArnoldRenderOptions.aovMode", 2 if self.__ignore_aovs else 1)
             self.__refresh_ignore_aov()
 
     # On output denoising aov checkbox changed
     def __on_state_changed_output_denoising_aovs(self, state):
         if not self._preset_hovered:
             enabled = state == 2
-            ls("defaultArnoldRenderOptions")[0].outputVarianceAOVs.set(enabled)
-            if objExists("defaultArnoldDriver"):
+            pm.ls("defaultArnoldRenderOptions")[0].outputVarianceAOVs.set(enabled)
+            if pm.objExists("defaultArnoldDriver"):
                 multipart = True
                 if enabled:
                     multipart = False
                 else:
-                    cameras = ls(type="camera")
+                    cameras = pm.ls(type="camera")
                     for cam in cameras:
                         if cam.ai_translator.get() == "lentil_camera":
                             multipart = False
                             break
-                half_driver = ls("defaultArnoldDriver", type="aiAOVDriver")[0]
+                half_driver = pm.ls("defaultArnoldDriver", type="aiAOVDriver")[0]
                 half_driver.multipart.set(multipart)
 
             self.__refresh_output_denoising_aov()
 
     def add_callbacks(self):
-        self.__arnold_render_callback = scriptJob(
+        self.__arnold_render_callback = pm.scriptJob(
             attributeChange=['defaultArnoldRenderOptions.outputVarianceAOVs', self.__refresh_output_denoising_aov])
         for ign_field in self.__ignore_fields:
             ign_field.add_callback()
 
     def remove_callbacks(self):
-        scriptJob(kill=self.__arnold_render_callback)
+        pm.scriptJob(kill=self.__arnold_render_callback)
 
         for ign_field in self.__ignore_fields:
             ign_field.remove_callback()
@@ -223,17 +223,17 @@ class FeatureOverridesPart(ControlRoomPart):
         for ign_field in self.__ignore_fields:
             key, field = ign_field.get_key_preset_and_field()
             if key:
-                preset.set(self._part_name, key, getAttr(field))
+                preset.set(self._part_name, key, pm.getAttr(field))
         preset.set(self._part_name, "ignore_aovs", self.__ignore_aovs)
-        preset.set(self._part_name, "output_denoising", getAttr("defaultArnoldRenderOptions.outputVarianceAOVs"))
+        preset.set(self._part_name, "output_denoising", pm.getAttr("defaultArnoldRenderOptions.outputVarianceAOVs"))
 
     def apply(self, preset):
         for ign_field in self.__ignore_fields:
             key, field = ign_field.get_key_preset_and_field()
             if key and preset.contains(self._part_name, key):
-                setAttr(field, preset.get(self._part_name, key))
+                pm.setAttr(field, preset.get(self._part_name, key))
         if preset.contains(self._part_name, "ignore_aovs"):
             self.__ignore_aovs = preset.get(self._part_name, "ignore_aovs")
-            setAttr("defaultArnoldRenderOptions.aovMode", 2 if self.__ignore_aovs else 1)
+            pm.setAttr("defaultArnoldRenderOptions.aovMode", 2 if self.__ignore_aovs else 1)
         if preset.contains(self._part_name, "output_denoising"):
-            setAttr("defaultArnoldRenderOptions.outputVarianceAOVs", preset.get(self._part_name, "output_denoising"))
+            pm.setAttr("defaultArnoldRenderOptions.outputVarianceAOVs", preset.get(self._part_name, "output_denoising"))
