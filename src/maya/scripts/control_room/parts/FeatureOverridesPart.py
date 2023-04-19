@@ -60,7 +60,7 @@ class IgnoreFields:
         try:
             visible_layer = render_setup.instance().getVisibleRenderLayer()
             is_default_layer = visible_layer.name() == "defaultRenderLayer"
-            val = getAttr(self.__field_name)
+            val = pm.getAttr(self.__field_name)
 
             hovered_preset = self.__control_room.get_hovered_preset()
             if hovered_preset and hovered_preset.contains(self.__part_name, self.__key_preset):
