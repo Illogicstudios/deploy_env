@@ -53,20 +53,22 @@ def __get_val(v):
 def print_var(*vs, empty_tab=False):
     vs = vs[0] if len(vs) == 1 else vs
     tabulation = "\t" if empty_tab else "`\t"
-    __print_var_aux(vs, tabulation)
+    print(__print_var_aux(vs, tabulation))
 
 
 def __print_var_aux(v, tabulation, tabs=0, v_in_dict=False):
+    str_msg = ""
     if type(v) is dict:
         if len(v) == 0:
-            print("{}")
+            str_msg += "{}\n"
         else:
-            if v_in_dict: print("")
-            print(tabs * tabulation + "{")
+            if v_in_dict:
+                str_msg += "\n"
+            str_msg += tabs * tabulation + "{\n"
             for key, elems in v.items():
-                print((tabs + 1) * tabulation + __get_val(key) + " : ", end="")
-                __print_var_aux(elems, tabulation, tabs + 1, True)
-            print(tabs * tabulation + "}")
+                str_msg += (tabs + 1) * tabulation + __get_val(key) + " : "
+                str_msg += __print_var_aux(elems, tabulation, tabs + 1, True)
+            str_msg += tabs * tabulation + "}\n"
     elif type(v) is list or type(v) is tuple:
         if type(v) is list:
             char_start = "["
@@ -75,19 +77,21 @@ def __print_var_aux(v, tabulation, tabs=0, v_in_dict=False):
             char_start = "("
             char_end = ")"
         if len(v) == 0:
-            print(char_start + char_end)
+            str_msg += char_start + char_end + "\n"
         else:
-            if v_in_dict: print("")
-            print(tabs * tabulation + char_start)
+            if v_in_dict:
+                str_msg += "\n"
+            str_msg += tabs * tabulation + char_start + "\n"
             for elem_list in v:
-                __print_var_aux(elem_list, tabulation, tabs + 1, False)
-            print(tabs * tabulation + char_end)
+                str_msg += __print_var_aux(elem_list, tabulation, tabs + 1, False)
+            str_msg += tabs * tabulation + char_end + "\n"
     else:
         tabs_str = "" if v_in_dict else tabs * tabulation
         try:
-            print(tabs_str + __get_val(v))
+            str_msg += tabs_str + __get_val(v) + "\n"
         except:
-            print(tabs_str + "Unknown value")
+            str_msg += tabs_str + "Unknown value" + "\n"
+    return str_msg
 
 
 def print_warning(msg, char_filler='-'):
