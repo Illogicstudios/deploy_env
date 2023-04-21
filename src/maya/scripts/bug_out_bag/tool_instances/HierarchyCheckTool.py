@@ -1,3 +1,5 @@
+import re
+
 from shiboken2 import wrapInstance
 from functools import partial
 
@@ -103,13 +105,17 @@ class HierarchyCheckTool(ActionTool):
         self.__selection = []
         self.__hierarchy_visualizer = None
 
+    @staticmethod
+    def trim_name(name):
+        return re.match("^(?:.*:)?(?:.*|)(.*)?$",name).group(1)
+
     def _action(self):
         def check_if_same_objects(obj_1, obj_2):
             obj_diff_1 = []
             obj_diff_2 = []
-            children_data_1 = {child_1.name().split("|")[-1]: child_1 for child_1 in
+            children_data_1 = {HierarchyCheckTool.trim_name(child_1.name()): child_1 for child_1 in
                                pm.listRelatives(obj_1, children=True)}
-            children_data_2 = {child_2.name().split("|")[-1]: child_2 for child_2 in
+            children_data_2 = {HierarchyCheckTool.trim_name(child_2.name()): child_2 for child_2 in
                                pm.listRelatives(obj_2, children=True)}
             children_name_1 = list(children_data_1.keys())
             children_name_1_copy = children_name_1.copy()
