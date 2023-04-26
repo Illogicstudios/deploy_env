@@ -125,7 +125,7 @@ class ImageSizePart(ControlRoomPart):
 
     # On slider Overscan changed
     def __on_slider_overscan_changed(self, value):
-        if self.__cam is not None:
+        if self.__cam is not None and not self.__cam.overscan.isLocked() and not self.__cam.overscan.isConnected():
             value = value / 1000
             if value > 0:
                 self.__ui_overscan_line_edit.setText(str(value))
@@ -242,10 +242,16 @@ class ImageSizePart(ControlRoomPart):
                 else:
                     self.__ui_overscan_slider.setValue(overscan * 1000)
 
-            self.__ui_overscan_slider.setEnabled(self.__cam is not None and not self.__cam.overscan.isLocked())
-            self.__ui_enable_gate_cb.setEnabled(self.__cam is not None and not self.__cam.displayResolution.isLocked())
-            self.__ui_opaque_gate_cb.setEnabled(self.__cam is not None and not self.__cam.displayGateMaskOpacity.isLocked()
-                                                and not self.__cam.displayGateMaskColor.isLocked())
+            self.__ui_overscan_slider.setEnabled(self.__cam is not None and not self.__cam.overscan.isLocked()
+                                                 and not self.__cam.overscan.isConnected())
+            self.__ui_overscan_line_edit.setEnabled(self.__cam is not None and not self.__cam.overscan.isLocked()
+                                                 and not self.__cam.overscan.isConnected())
+            self.__ui_enable_gate_cb.setEnabled(self.__cam is not None and not self.__cam.displayResolution.isLocked()
+                                                and not self.__cam.displayResolution.isConnected())
+            self.__ui_opaque_gate_cb.setEnabled(
+                self.__cam is not None and not self.__cam.displayGateMaskOpacity.isLocked()
+                and not self.__cam.displayGateMaskOpacity.isConnected()
+                and not self.__cam.displayGateMaskColor.isConnected())
 
             stylesheet_lbl = self._control_room.get_stylesheet_color_for_field(
                 self._part_name, "enable_gate", self.__is_gate_enabled)

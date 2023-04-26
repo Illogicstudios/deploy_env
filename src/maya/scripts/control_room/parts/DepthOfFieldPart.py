@@ -72,8 +72,11 @@ class DepthOfFieldPart(ControlRoomPart):
                     self._preset_hovered = False
                 else:
                     self.__ui_line_edit_fstop.setText(str(f_stop))
-            self.__ui_dof_cb.setEnabled(self.__cam is not None and not self.__cam.depthOfField.isLocked())
-            self.__ui_line_edit_fstop.setEnabled(self.__cam is not None and dof_checked and not self.__cam.fStop.isLocked())
+            self.__ui_dof_cb.setEnabled(self.__cam is not None and not self.__cam.depthOfField.isLocked()
+                                        and not self.__cam.depthOfField.isConnected())
+            self.__ui_line_edit_fstop.setEnabled(self.__cam is not None and dof_checked
+                                                 and not self.__cam.fStop.isLocked()
+                                                 and not self.__cam.fStop.isConnected())
         except:
             pass
 
