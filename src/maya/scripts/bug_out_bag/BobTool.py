@@ -5,8 +5,8 @@ from PySide2.QtCore import *
 
 import pymel.core as pm
 
-from BobElement import *
-from BobCollapsibleWidget import *
+from .BobElement import *
+from .BobCollapsibleWidget import *
 
 
 class BobTool(BobElement, ABC):

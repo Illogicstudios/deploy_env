@@ -15,25 +15,25 @@ from PySide2.QtCore import *
 
 from shiboken2 import wrapInstance
 
-import utils
+import common.utils
 
-from Prefs import *
-from BobCategory import *
+from common.Prefs import *
+from .BobCategory import *
 
-from tool_instances.LockTool import *
-from tool_instances.CleanFreezeTool import *
-from tool_instances.CleanerTool import *
-from tool_instances.TextureCheckTool import *
-from tool_instances.ShaderTransfer import *
-from tool_instances.RestPosToVertexColorTool import *
-from tool_instances.DeleteOrigTool import *
-from tool_instances.UVCopierTool import *
-from tool_instances.ShapeRenamerTool import *
-from tool_instances.SplineStepTool import *
-from tool_instances.OverrideKillerTool import *
-from tool_instances.ShadingGroupRenamer import *
-from tool_instances.HierarchyCheckTool import *
-from tool_instances.CharacterTimeSetTool import *
+from .tool_instances.LockTool import *
+from .tool_instances.CleanFreezeTool import *
+from .tool_instances.CleanerTool import *
+from .tool_instances.TextureCheckTool import *
+from .tool_instances.ShaderTransfer import *
+from .tool_instances.RestPosToVertexColorTool import *
+from .tool_instances.DeleteOrigTool import *
+from .tool_instances.UVCopierTool import *
+from .tool_instances.ShapeRenamerTool import *
+from .tool_instances.SplineStepTool import *
+from .tool_instances.OverrideKillerTool import *
+from .tool_instances.ShadingGroupRenamer import *
+from .tool_instances.HierarchyCheckTool import *
+from .tool_instances.CharacterTimeSetTool import *
 
 # ######################################################################################################################
 

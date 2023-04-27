@@ -1,6 +1,6 @@
-import ControlRoom as cr
-from ControlRoom import *
-from ControlRoomPart import *
+import control_room.ControlRoom as cr
+from ..ControlRoom import *
+from ..ControlRoomPart import *
 import pymel.core as pm
 
 

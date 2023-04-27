@@ -1,6 +1,6 @@
 import enum
-from ControlRoomPart import *
-from FormSlider import *
+from ..ControlRoomPart import *
+from ..FormSlider import *
 import pymel.core as pm
 from functools import partial
 

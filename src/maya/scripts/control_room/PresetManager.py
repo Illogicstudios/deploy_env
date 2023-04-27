@@ -3,8 +3,8 @@ import base64
 import os.path
 
 import pymel.core as pm
-from utils import *
-from Preset import *
+from common.utils import *
+from .Preset import *
 
 
 class PresetManager:

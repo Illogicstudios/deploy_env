@@ -1,4 +1,4 @@
-from tool_models.MultipleActionTool import *
+from ..tool_models.MultipleActionTool import *
 
 
 class UVCopierTool(MultipleActionTool):

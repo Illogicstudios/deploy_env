@@ -1,4 +1,4 @@
-from BobTool import *
+from ..BobTool import *
 
 
 class ActionTool(BobTool, ABC):

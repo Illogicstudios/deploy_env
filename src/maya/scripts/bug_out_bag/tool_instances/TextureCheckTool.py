@@ -5,9 +5,9 @@ from functools import partial
 
 import maya.OpenMaya as OpenMaya
 
-from utils import *
+from common.utils import *
 
-from tool_models.ActionTool import *
+from ..tool_models.ActionTool import *
 
 import maya.OpenMayaUI as omui
 from shiboken2 import wrapInstance

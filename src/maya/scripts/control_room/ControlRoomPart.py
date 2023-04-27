@@ -9,7 +9,7 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 
-from utils import *
+from common.utils import *
 
 
 class ControlRoomPart(ABC):

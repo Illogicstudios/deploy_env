@@ -1,5 +1,5 @@
-from tool_models.MultipleActionTool import *
-from utils import *
+from ..tool_models.MultipleActionTool import *
+from common.utils import *
 
 class SplineStepTool(MultipleActionTool):
     def __init__(self):

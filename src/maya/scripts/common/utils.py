@@ -21,16 +21,15 @@ def clear_layout(layout):
         child.deleteLater()
 
 
-def unload_packages(silent=True, packages=None):
-    if packages is None:
-        packages = []
+def unload_packages(silent=True, package = None):
+    if package is None:
+        return
 
     # construct reload list
     reload_list = []
     for i in sys.modules.keys():
-        for package in packages:
-            if i.startswith(package):
-                reload_list.append(i)
+        if i.startswith(package):
+            reload_list.append(i)
 
     # unload everything
     for i in reload_list:

@@ -4,9 +4,9 @@ from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 
-import utils
-from BobElement import *
-from BobCollapsibleWidget import *
+import common.utils
+from .BobElement import *
+from .BobCollapsibleWidget import *
 
 
 class BobCategory(BobElement):

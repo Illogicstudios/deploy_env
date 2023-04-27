@@ -1,6 +1,6 @@
-from tool_models.ActionTool import *
+from ..tool_models.ActionTool import *
 
-from utils import *
+from common.utils import *
 
 
 class OverrideKillerTool(ActionTool):

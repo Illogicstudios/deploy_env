@@ -9,10 +9,9 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 
 import pymel.core as pm
-from utils import *
+from common.utils import *
 
-import ControlRoom as cr
-from ControlRoom import *
+from .ControlRoom import *
 
 
 class FormSliderType(Enum):

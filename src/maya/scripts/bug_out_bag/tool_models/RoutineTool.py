@@ -1,6 +1,6 @@
 from functools import partial
 
-from BobTool import *
+from ..BobTool import *
 
 
 class RoutineTool(BobTool, ABC):

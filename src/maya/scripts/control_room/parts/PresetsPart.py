@@ -6,9 +6,9 @@ from functools import partial
 import maya.OpenMaya as OpenMaya
 import pymel.core as pm
 
-from ControlRoomPart import *
-from FormSlider import *
-from PresetManager import *
+from ..ControlRoomPart import *
+from ..FormSlider import *
+from ..PresetManager import *
 
 _NBMAX_PRESET = 10
 

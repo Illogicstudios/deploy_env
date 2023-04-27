@@ -33,7 +33,7 @@ global proc shelf_Illogic () {
         -style "iconOnly" 
         -marginWidth 1
         -marginHeight 1
-        -command "import sys\nimport importlib\n\nmodules = [\n    \"BobApp\",\n    \"Prefs\",\n    \"BobElement\",\n    \"BobCategory\",\n    \"BobTool\",\n    \"BobCollapsibleWidget\",\n    # Tool Models\n    \"tool_models.ActionTool\",\n    \"tool_models.MultipleActionTool\",\n    \"tool_models.RoutineTool\",\n    # Tool Instance Templates\n    \"tool_instances.ActionTemplateTool\",\n    \"tool_instances.MultipleActionTemplateTool\",\n    \"tool_instances.RoutineTemplateTool\",\n    # Tool Instances\n    \"tool_instances.LockTool\",\n    \"tool_instances.CleanFreezeTool\",\n    \"tool_instances.CleanerTool\",\n    \"tool_instances.TextureCheckTool\",\n    \"tool_instances.ShaderTransfer\",\n    \"tool_instances.RestPosToVertexColorTool\",\n    \"tool_instances.DeleteOrigTool\",\n    \"tool_instances.UVCopierTool\",\n    \"tool_instances.ShapeRenamerTool\",\n\t\"tool_instances.SplineStepTool\",\n\t\"tool_instances.HierarchyCheckTool\",\n\t\"tool_instances.CharacterTimeSetTool\",\n]\n\nfrom utils import *\nunload_packages(silent=True, packages=modules)\n\nfor module in modules:\n    importlib.import_module(module)\n\nfrom BobApp import *\n\ntry:\n    bob.close()\nexcept:\n    pass\nbob = BobApp()\nbob.show()\n" 
+        -command "import importlib\nfrom common import utils\n\nutils.unload_packages(silent=True, package=\"bug_out_bag\")\nimportlib.import_module(\"bug_out_bag\")\nfrom bug_out_bag.BobApp import BobApp\ntry:\n    bob.close()\nexcept:\n    pass\nbob = BobApp()\nbob.show()\n" 
         -sourceType "python" 
         -commandRepeatable 1
         -flat 1
@@ -67,7 +67,7 @@ global proc shelf_Illogic () {
         -style "iconOnly" 
         -marginWidth 1
         -marginHeight 1
-        -command "import sys\nimport importlib\n\nmodules = [\n    \"ControlRoom\",\n    \"Preset\",\n    \"PresetManager\",\n    \"FormSlider\",\n    \"parts.FeatureOverridesPart\",\n    \"parts.DepthOfFieldPart\",\n    \"parts.MotionBlurPart\",\n    \"parts.ImageSizePart\",\n    \"parts.SamplingPart\",\n    \"parts.AdaptiveSamplingPart\",\n    \"parts.PresetsPart\",\n]\n\n\nfrom utils import *\nunload_packages(silent=True, packages=modules)\n\nfor module in modules:\n    importlib.import_module(module)\n\n\nfrom ControlRoom import *\n\ntry:\n    control_room.close()\nexcept:\n    pass\ncontrol_room = ControlRoom()\ncontrol_room.show()\n" 
+        -command "import importlib\nfrom common import utils\n\nutils.unload_packages(silent=True, package=\"control_room\")\nimportlib.import_module(\"control_room\")\nfrom control_room.ControlRoom import ControlRoom\ntry:\n    control_room.close()\nexcept:\n    pass\ncontrol_room = ControlRoom()\ncontrol_room.show()\n" 
         -sourceType "python" 
         -commandRepeatable 1
         -flat 1
@@ -101,7 +101,7 @@ global proc shelf_Illogic () {
         -style "iconOnly" 
         -marginWidth 1
         -marginHeight 1
-        -command "import ShaderMaker\nfrom ShaderMaker import *\nunload_packages(silent=True, packages=[\"ShaderMaker\", \"Shader\", \"IdealFlowLayout\",\"Prefs\"])\n\ntry:\n    shader_maker.close()\nexcept:\n    pass\nshader_maker = ShaderMaker()\nshader_maker.show()\n" 
+        -command "import importlib\nfrom common import utils\n\nutils.unload_packages(silent=True, package=\"shader_maker\")\nimportlib.import_module(\"shader_maker\")\nfrom shader_maker.ShaderMaker import ShaderMaker\ntry:\n    shader_maker.close()\nexcept:\n    pass\nshader_maker = ShaderMaker()\nshader_maker.show()\n" 
         -sourceType "python" 
         -commandRepeatable 1
         -flat 1
@@ -135,7 +135,7 @@ global proc shelf_Illogic () {
         -style "iconOnly" 
         -marginWidth 1
         -marginHeight 1
-        -command "import importlib\n\nmodules=[\"studio_loader\"]\n\nfrom utils import *\nunload_packages(silent=True, packages=modules)\n\nfor module in modules:\n    importlib.import_module(module)\n\nimport studio_loader\n\nstudio_loader.run()\n" 
+        -command "import importlib\nfrom common import utils\n\nutils.unload_packages(silent=True, package=\"studio\")\nimportlib.import_module(\"studio\")\nfrom studio import studio_loader\nstudio_loader.run()\n" 
         -sourceType "python" 
         -commandRepeatable 1
         -flat 1

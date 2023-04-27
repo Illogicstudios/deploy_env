@@ -15,26 +15,26 @@ from PySide2.QtGui import *
 
 from shiboken2 import wrapInstance
 
-from utils import *
+from common.utils import *
 
-from Prefs import *
+from common.Prefs import *
 
 import maya.OpenMaya as OpenMaya
 
-from PresetManager import *
+from .PresetManager import *
 
 import maya.mel as mel
 import maya.app.renderSetup.model.override as maya_override
 import maya.app.renderSetup.model.renderSetup as render_setup
 import maya.app.renderSetup.model.utils as render_setup_utils
 
-from parts.FeatureOverridesPart import *
-from parts.DepthOfFieldPart import *
-from parts.MotionBlurPart import *
-from parts.ImageSizePart import *
-from parts.SamplingPart import *
-from parts.AdaptiveSamplingPart import *
-from parts.PresetsPart import *
+from .parts.FeatureOverridesPart import *
+from .parts.DepthOfFieldPart import *
+from .parts.MotionBlurPart import *
+from .parts.ImageSizePart import *
+from .parts.SamplingPart import *
+from .parts.AdaptiveSamplingPart import *
+from .parts.PresetsPart import *
 
 # ######################################################################################################################
 
