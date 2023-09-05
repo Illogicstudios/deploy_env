@@ -4,8 +4,38 @@ from ..BobTool import *
 
 
 class RoutineTool(BobTool, ABC):
+    """
+    Tool that performs a routine, i.e. a sequence of functions. Only certain steps can be executed.
+    The UI and the actions are customizable.
+    Example :
+    {
+        "step_1": {
+            "action": self.__some_function_1,       # Function executed on routine launched if step checked
+            "text": "Step 1"                        # Text on the step
+        },
+        "step_2": {
+            "action": self__some_function_2,
+            "text": "Step 2"
+        },
+        "step_3": {
+            "action": self.__some_function_3,
+            "text": "Step 3",
+            "checked": False                        # State checked at start
+        }
+    }
+    """
     def __init__(self, name, pref_name, steps, tooltip="", button_text="Run",
                  step_checked_default = True, checkbox_pref= True):
+        """
+        Constructor
+        :param name
+        :param pref_name
+        :param steps (see above)
+        :param tooltip
+        :param button_text
+        :param step_checked_default: State checked by default
+        :param checkbox_pref
+        """
         super().__init__(name, pref_name,tooltip)
         self.__checkbox_pref = checkbox_pref
         self.__description = "description"
@@ -21,6 +51,10 @@ class RoutineTool(BobTool, ABC):
         self.__global_cb = None
 
     def populate(self):
+        """
+        Populate the RoutineTool UI
+        :return:
+        """
         layout = super().populate()
         # Get the collapsible widget (the only widget of the layout)
         collapsible = layout.itemAt(0).widget()
@@ -56,11 +90,19 @@ class RoutineTool(BobTool, ABC):
         return layout
 
     def __run(self):
+        """
+        Run the routine
+        :return:
+        """
         for step in self.__steps.values():
             if step["checked"]:
                 step["action"]()
 
     def __refresh_ui(self):
+        """
+        Refresh the UI
+        :return:
+        """
         enabled = False
         checked = True
         for step in self.__steps.values():
@@ -74,10 +116,21 @@ class RoutineTool(BobTool, ABC):
         self.__refreshing = False
 
     def __on_step_state_modified(self, step_key, state):
+        """
+        On checkbox state changed retrieve the value
+        :param step_key
+        :param state
+        :return:
+        """
         self.__steps[step_key]["checked"] = state == 2
         self.__refresh_ui()
 
     def __on_global_state_changed(self, state):
+        """
+        On global checkbox state changed, retrieve the value and change the step checked state
+        :param state:
+        :return:
+        """
         if not self.__refreshing:
             for step_name in self.__steps.keys():
                 self.__steps[step_name]["checkbox"].setChecked(state == 2)

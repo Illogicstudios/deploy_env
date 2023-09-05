@@ -22,11 +22,19 @@ class LockTool(MultipleActionTool):
         self.__ignore_root_checkbox = None
 
     def populate(self):
+        """
+        Populate the LockToolUI
+        :return:
+        """
         layout = super(LockTool, self).populate()
         self.__refresh_ui()
         return layout
 
     def __get_transforms_selected(self):
+        """
+        Get the selected transform nodes (recursive)
+        :return: transforms
+        """
         selection = pm.ls(selection=True, type="transform")
         if self.__ignore_root:
             transforms = []
@@ -38,6 +46,10 @@ class LockTool(MultipleActionTool):
         return transforms
 
     def __lock_selection(self):
+        """
+        Lock all the transform nodes selected
+        :return:
+        """
         selection = self.__get_transforms_selected()
         for transform in selection:
             transform.translate.lock()
@@ -46,6 +58,10 @@ class LockTool(MultipleActionTool):
         self.__refresh_ui()
 
     def __unlock_selection(self):
+        """
+        Unlock all the transform nodes selected
+        :return:
+        """
         selection = self.__get_transforms_selected()
         for transform in selection:
             transform.translate.unlock()
@@ -63,6 +79,10 @@ class LockTool(MultipleActionTool):
         self.__refresh_ui()
 
     def __refresh_ui(self):
+        """
+        Refresh the UI
+        :return:
+        """
         selection = self.__get_transforms_selected()
         unlocked = False
         locked = False
@@ -92,20 +112,43 @@ class LockTool(MultipleActionTool):
             self._actions["unlock"]["button"].setEnabled(unlocked)
 
     def on_selection_changed(self):
+        """
+        Refresh the UI on selection changed
+        :return:
+        """
         self.__refresh_ui()
 
     def on_dag_changed(self):
+        """
+        Refresh the UI on dag changed
+        :return:
+        """
         self.__refresh_ui()
 
     def on_select_children_state_changed(self, state):
+        """
+        Retrieve the state checked from the Select Children checkbox
+        :param state:
+        :return:
+        """
         self.__select_children = state == 2
         self.__refresh_ui()
 
     def on_ignore_root_state_changed(self, state):
+        """
+        Retrieve the state checked from theIgnore Root checkbox
+        :param state:
+        :return:
+        """
         self.__ignore_root = state == 2
         self.__refresh_ui()
 
     def _add_ui_before_buttons(self, lyt):
+        """
+        Add checkboxes before buttons in UI
+        :param lyt:
+        :return:
+        """
         cb_lyt = QHBoxLayout()
         cb_lyt.setAlignment(Qt.AlignCenter)
         lyt.addLayout(cb_lyt)

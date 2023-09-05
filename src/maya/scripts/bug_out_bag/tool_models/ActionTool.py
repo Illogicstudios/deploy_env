@@ -2,6 +2,9 @@ from ..BobTool import *
 
 
 class ActionTool(BobTool, ABC):
+    """
+    Tool that executes one action with a single button
+    """
     def __init__(self, name, pref_name, description, tooltip="", button_text="Run"):
         super().__init__(name, pref_name, tooltip)
         self.__description = description
@@ -10,14 +13,26 @@ class ActionTool(BobTool, ABC):
 
     @abstractmethod
     def _action(self):
+        """
+        Function executed when the button is pressed
+        :return:
+        """
         pass
 
     def __action_with_chunks(self):
+        """
+        Enclosing the action function in order to be able to rollback it
+        :return:
+        """
         pm.undoInfo(openChunk=True)
         self._action()
         pm.undoInfo(closeChunk=True)
 
     def populate(self):
+        """
+        Populate the ActionTool UI
+        :return:
+        """
         layout = super().populate()
         # Get the collapsible widget (the only widget of the layout)
         collapsible = layout.itemAt(0).widget()

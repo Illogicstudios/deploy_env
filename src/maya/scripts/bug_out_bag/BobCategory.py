@@ -11,6 +11,12 @@ from .BobCollapsibleWidget import *
 
 class BobCategory(BobElement):
     def __init__(self, name, prefs, bob_tools):
+        """
+        Constructor
+        :param name
+        :param prefs
+        :param bob_tools : array of tools
+        """
         super().__init__(name)
         self.__prefs = prefs
         self._bob_tools = bob_tools
@@ -18,6 +24,10 @@ class BobCategory(BobElement):
             bob_tool.set_prefs(self.__prefs)
 
     def populate(self):
+        """
+        Populate the category UI
+        :return:
+        """
         scroll = QScrollArea()
         scroll.setFocusPolicy(Qt.NoFocus)
         widget = QWidget()
@@ -40,17 +50,33 @@ class BobCategory(BobElement):
         return scroll
 
     def on_selection_changed(self):
+        """
+        Distribute the selection changed event to tools
+        :return:
+        """
         for bob_tool in self._bob_tools:
             bob_tool.on_selection_changed()
 
     def on_dag_changed(self):
+        """
+        Distribute the dag changed event to tools
+        :return:
+        """
         for bob_tool in self._bob_tools:
             bob_tool.on_dag_changed()
 
     def save_prefs(self):
+        """
+        Distribute the save prefs function to tools
+        :return:
+        """
         for bob_tool in self._bob_tools:
             bob_tool.save_prefs()
 
     def retrieve_prefs(self):
+        """
+        Distribute the retrieve prefs function to tools
+        :return:
+        """
         for bob_tool in self._bob_tools:
             bob_tool.retrieve_prefs()

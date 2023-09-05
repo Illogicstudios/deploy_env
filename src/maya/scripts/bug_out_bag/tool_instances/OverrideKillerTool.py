@@ -9,6 +9,10 @@ class OverrideKillerTool(ActionTool):
                          description="Disable all the \"Enable Overrides\" in the scene", button_text="Run")
         
     def _action(self):
+        """
+        Remove all the override from transforms and shapes
+        :return:
+        """
         for sel in pm.ls(type=["shape", "transform"]):
             try:
                 sel.overrideEnabled.set(0)

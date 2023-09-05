@@ -4,23 +4,14 @@ from common.utils import *
 
 
 class RestPosToVertexColorTool(ActionTool):
-    # @staticmethod
-    # def store_rest_old(obj):
-    #     rest = "Pref"
-    #     colorSets = pm.polyColorSet(query=True, allColorSets=True)
-    #
-    #     if not colorSets or not rest in colorSets:
-    #         pm.polyColorSet(create=True, colorSet=rest, clamped=False, rpt="RGB")
-    #     pm.polyColorSet(obj, currentColorSet=True, colorSet=rest)
-    #     verts = obj.verts
-    #     for v in verts:
-    #         pos = pm.xform(v, q=True, ws=True, t=True)
-    #         pm.select(v)
-    #         pm.polyColorPerVertex(rgb=pos)
-    #     obj.aiExportColors.set(1)
 
     @staticmethod
     def store_rest(shape):
+        """
+        Store the rest pos to the color vertex of the shape
+        :param shape
+        :return:
+        """
         print(shape)
         color_set_name = "Pref"
 
@@ -71,17 +62,27 @@ class RestPosToVertexColorTool(ActionTool):
         self.__selection = []
 
     def _action(self):
+        """
+        Rest pos to Color Vertex on all selected transforms and shapes
+        :return:
+        """
         selection = self.__selection
         for elem in selection:
-            # RestPosToVertexColorTool.store_rest(elem)
             RestPosToVertexColorTool.store_rest(elem)
         pm.select(selection)
 
-    # Refresh the button
     def __refresh_btn(self):
+        """
+        Refresh the button
+        :return:
+        """
         self._action_btn.setEnabled(len(self.__selection) > 0)
 
     def __retrieve_selection(self):
+        """
+        Retrieve the selected transforms and shapes
+        :return:
+        """
         transform = pm.ls(sl=True)
         shapes = pm.ls(sl=True, shapes=True)
         self.__selection = pm.listRelatives(transform, ad=True, type="mesh")
@@ -89,12 +90,19 @@ class RestPosToVertexColorTool(ActionTool):
             if shape not in self.__selection:
                 self.__selection.append(shape)
 
-    # Refresh the button on selection changed
     def on_selection_changed(self):
+        """
+        Refresh the button on selection changed
+        :return:
+        """
         self.__retrieve_selection()
         self.__refresh_btn()
 
     def populate(self):
+        """
+        Populate the RestPosToColorVertexTool UI
+        :return:
+        """
         layout = super(RestPosToVertexColorTool, self).populate()
         self.__retrieve_selection()
         self.__refresh_btn()

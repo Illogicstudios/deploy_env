@@ -36,6 +36,10 @@ class CleanerTool(RoutineTool):
 
     @staticmethod
     def __optimize_scene_size():
+        """
+        Optimize the scene size by cleaning the scene
+        :return:
+        """
         print("\nvvvvvvvvvvvvvvvv Optimize Scene Size vvvvvvvvvvvvvvvv")
         pm.mel.source('cleanUpScene')
         pm.mel.scOpt_performOneCleanup({
@@ -61,6 +65,10 @@ class CleanerTool(RoutineTool):
 
     @staticmethod
     def __delete_unknown_node():
+        """
+        Delete all the unknown Nodes from the scene
+        :return:
+        """
         print("\nvvvvvvvvvvvvvvv Delete Unknown Nodes vvvvvvvvvvvvvvvv")
         unknown = pm.ls(type="unknown")
         if unknown:
@@ -72,6 +80,10 @@ class CleanerTool(RoutineTool):
 
     @staticmethod
     def __remove_unknown_plugins():
+        """
+        Remove the unknown Plugins from the scene
+        :return:
+        """
         print("\nvvvvvvvvvvvvvv Remove Unknown Plugins vvvvvvvvvvvvvvv")
         old_plug = pm.unknownPlugin(query=True, list=True)
         if old_plug:
@@ -87,6 +99,10 @@ class CleanerTool(RoutineTool):
 
     @staticmethod
     def __unlock_all_nodes():
+        """
+        Unlock all the Nodes in the scene
+        :return:
+        """
         print("\n------------------ Unlock All Nodes -----------------\n")
         all_nodes = pm.ls()
         if all_nodes:
@@ -95,6 +111,10 @@ class CleanerTool(RoutineTool):
 
     @staticmethod
     def __remove_blast_panel_error():
+        """
+        Fix the CgAbBlastPanel Error
+        :return:
+        """
         print("\n------------ Remove CgAbBlastPanel Error ------------\n")
         for model_panel in pm.getPanel(typ="modelPanel"):
             # Get callback of the model editor
@@ -108,6 +128,10 @@ class CleanerTool(RoutineTool):
 
     @staticmethod
     def __fix_isg():
+        """
+        Fix the initialShadingGroup Error
+        :return:
+        """
         print("\n-------------- Fix initialShadingGroup --------------\n")
         pm.lockNode('initialShadingGroup', lock=0, lockUnpublished=0)
         pm.lockNode('initialParticleSE', lock=0, lockUnpublished=0)

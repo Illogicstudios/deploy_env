@@ -11,6 +11,14 @@ from common.utils import *
 
 class HierarchyCheckVisualizeer(QDialog):
     def __init__(self, tool, sel_1, sel_2, object_diff_data_1, object_diff_data_2):
+        """
+        Constructor
+        :param tool
+        :param sel_1: object selected 1
+        :param sel_2: object selected 1
+        :param object_diff_data_1: differences in hierarchies from object 2
+        :param object_diff_data_2: differences in hierarchies from object 2
+        """
         super(HierarchyCheckVisualizeer, self).__init__(wrapInstance(int(omui.MQtUtil.mainWindow()), QWidget))
         self.__tool = tool
 
@@ -39,17 +47,27 @@ class HierarchyCheckVisualizeer(QDialog):
         self.__create_ui()
         self.refresh_ui()
 
-    # On show event create the callbacks and initialize some values
     def showEvent(self, arg__1: QtGui.QShowEvent) -> None:
+        """
+        On show event create the callbacks and initialize some values
+        :return:
+        """
         self.__tool.set_opened(True)
         self.__opened = True
 
-    # On hide event remove callbacks and change some values
     def hideEvent(self, arg__1: QtGui.QCloseEvent) -> None:
+        """
+        On hide event remove callbacks and change some values
+        :return:
+        """
         self.__tool.set_opened(False)
         self.__opened = False
 
     def __create_ui(self):
+        """
+        Create the UI
+        :return:
+        """
         # Reinit attributes of the UI
         self.setMinimumSize(self.__ui_min_width, self.__ui_min_height)
         self.resize(self.__ui_width, self.__ui_height)
@@ -76,8 +94,11 @@ class HierarchyCheckVisualizeer(QDialog):
         self.__ui_list_view_2.currentItemChanged.connect(partial(self.__on_object_selected,self.__ui_list_view_1))
         grid_layout.addWidget(self.__ui_list_view_2, 1, 1)
 
-    # Refresh the ui according to the model attribute
     def refresh_ui(self):
+        """
+        Refresh the ui according to the model attribute
+        :return:
+        """
         self.__ui_list_view_1.clear()
         self.__ui_list_view_2.clear()
         for obj_diff in self.__object_diff_data_1:
@@ -90,6 +111,13 @@ class HierarchyCheckVisualizeer(QDialog):
             self.__ui_list_view_2.addItem(item)
 
     def __on_object_selected(self, list_to_clear, item, previous):
+        """
+        Select the item in the scene selected when selected in the list
+        :param list_to_clear
+        :param item
+        :param previous
+        :return:
+        """
         if item is not None:
             list_to_clear.setCurrentItem(None)
             pm.select(item.data(Qt.UserRole))
@@ -107,9 +135,18 @@ class HierarchyCheckTool(ActionTool):
 
     @staticmethod
     def trim_name(name):
+        """
+        Get only the end of a name of an object
+        :param name:
+        :return:
+        """
         return re.match("^(?:.*:)?(?:.*\|)?(\w+)$",name).group(1)
 
     def _action(self):
+        """
+        Check that hierarchies are the same
+        :return:
+        """
         def check_if_same_objects(obj_1, obj_2):
             obj_diff_1 = []
             obj_diff_2 = []
@@ -180,6 +217,7 @@ class HierarchyCheckTool(ActionTool):
                 msg.setText("Objects match each other")
                 msg.exec_()
             else:
+                # If differences found, show the visualizer
                 try:
                     self.__hierarchy_visualizer.hide()
                 except Exception:
@@ -188,24 +226,42 @@ class HierarchyCheckTool(ActionTool):
                 self.__hierarchy_visualizer.show()
                 self.__hierarchy_visualizer.refresh_ui()
 
-    # setter of the state opened
     def set_opened(self, opened):
+        """
+        Setter of the state opened
+        :param opened
+        :return:
+        """
         self.__dialog_opened = opened
         self.__refresh_btn()
 
-    # Refresh the button
     def __refresh_btn(self):
+        """
+        Refresh the button
+        :return:
+        """
         self._action_btn.setEnabled(len(self.__selection) >= 2)
 
     def __retrieve_selection(self):
+        """
+        Reieve the selection
+        :return:
+        """
         self.__selection = pm.ls(sl=True)
 
-    # Refresh the button on selection changed
     def on_selection_changed(self):
+        """
+        Refresh the button on selection changed
+        :return:
+        """
         self.__retrieve_selection()
         self.__refresh_btn()
 
     def populate(self):
+        """
+        Populate the HierarchyCheckTool UI
+        :return:
+        """
         layout = super(HierarchyCheckTool, self).populate()
         self.__retrieve_selection()
         self.__refresh_btn()

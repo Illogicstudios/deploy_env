@@ -24,16 +24,17 @@ from .tool_instances.LockTool import *
 from .tool_instances.CleanFreezeTool import *
 from .tool_instances.CleanerTool import *
 from .tool_instances.TextureCheckTool import *
-from .tool_instances.ShaderTransfer import *
+from .tool_instances.ShaderTransferTool import *
 from .tool_instances.RestPosToVertexColorTool import *
 from .tool_instances.DeleteOrigTool import *
 from .tool_instances.UVCopierTool import *
 from .tool_instances.ShapeRenamerTool import *
 from .tool_instances.SplineStepTool import *
 from .tool_instances.OverrideKillerTool import *
-from .tool_instances.ShadingGroupRenamer import *
+from .tool_instances.ShadingGroupRenamerTool import *
 from .tool_instances.HierarchyCheckTool import *
 from .tool_instances.CharacterTimeSetTool import *
+from .tool_instances.TraceSetTool import *
 
 # ######################################################################################################################
 
@@ -59,11 +60,12 @@ class BobApp(QDialog):
         self.__bob_categories = [
             BobCategory("Utils", self.__prefs, [
                 LockTool(),
-                ShaderTransfer(),
+                ShaderTransferTool(),
                 RestPosToVertexColorTool(),
                 UVCopierTool(),
                 SplineStepTool(),
                 CharacterTimeSetTool(),
+                TraceSetTool()
             ]),
             BobCategory("Clean", self.__prefs, [
                 CleanFreezeTool(),
@@ -71,7 +73,7 @@ class BobApp(QDialog):
                 TextureCheckTool(),
                 DeleteOrigTool(),
                 ShapeRenamerTool(),
-                ShadingGroupRenamer(),
+                ShadingGroupRenamerTool(),
                 OverrideKillerTool(),
                 HierarchyCheckTool(),
             ]),
@@ -101,8 +103,11 @@ class BobApp(QDialog):
         self.__create_ui()
         self.__refresh_ui()
 
-    # Save preferences
     def __save_prefs(self):
+        """
+        Save preferences
+        :return:
+        """
         size = self.size()
         self.__prefs["window_size"] = {"width": size.width(), "height": size.height()}
         pos = self.pos()
@@ -111,8 +116,11 @@ class BobApp(QDialog):
         for bob_categ in self.__bob_categories:
             bob_categ.save_prefs()
 
-    # Retrieve preferences
     def __retrieve_prefs(self):
+        """
+        Retrieve preferences
+        :return:
+        """
         if "window_size" in self.__prefs:
             size = self.__prefs["window_size"]
             self.__ui_width = size["width"]
@@ -127,27 +135,33 @@ class BobApp(QDialog):
         for bob_categ in self.__bob_categories:
             bob_categ.retrieve_prefs()
 
-    # Create callbacks when DAG changes and the selection changes
     def __create_callback(self):
+        """
+        Create callbacks when DAG changes and the selection changes
+        :return:
+        """
         self.__selection_callback = \
             OpenMaya.MEventMessage.addEventCallback("SelectionChanged", self.__on_selection_changed)
         self.__dag_callback = \
             OpenMaya.MEventMessage.addEventCallback("DagObjectCreated", self.__on_dag_changed)
 
-    # Remove callbacks
     def hideEvent(self, arg__1: QtGui.QCloseEvent) -> None:
+        """
+        Remove callbacks
+        :return:
+        """
         OpenMaya.MMessage.removeCallback(self.__selection_callback)
         OpenMaya.MMessage.removeCallback(self.__dag_callback)
         self.__save_prefs()
 
-    # Create the ui
     def __create_ui(self):
+        """
+        Create the ui
+        """
         # Reinit attributes of the UI
         self.setMinimumSize(self.__ui_min_width, self.__ui_min_height)
         self.resize(self.__ui_width, self.__ui_height)
         self.move(self.__ui_pos)
-
-        # asset_path = os.path.dirname(__file__) + "/assets/asset.png"
 
         # Main Layout
         main_lyt = QVBoxLayout()
@@ -157,8 +171,11 @@ class BobApp(QDialog):
         self.__tab_widget.currentChanged.connect(self.__tab_changed)
         main_lyt.addWidget(self.__tab_widget)
 
-    # Refresh the ui according to the model attribute
     def __refresh_ui(self):
+        """
+        Refresh the ui according to the model attribute
+        :return:
+        """
         current_index = self.__selected_category
         self.__tab_widget.clear()
         for bob_categ in self.__bob_categories:
@@ -167,12 +184,25 @@ class BobApp(QDialog):
         self.__tab_widget.setCurrentIndex(current_index)
 
     def __on_selection_changed(self, *args, **kwargs):
+        """
+        Distribute to categories the selection changed event
+        :return:
+        """
         for bob_categ in self.__bob_categories:
             bob_categ.on_selection_changed()
 
     def __on_dag_changed(self, *args, **kwargs):
+        """
+        Distribute to categories the dag changed event
+        :return:
+        """
         for bob_categ in self.__bob_categories:
             bob_categ.on_dag_changed()
 
     def __tab_changed(self, index):
+        """
+        Retrieve the tab index
+        :param index
+        :return:
+        """
         self.__selected_category = index

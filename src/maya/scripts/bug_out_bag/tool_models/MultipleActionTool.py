@@ -2,7 +2,41 @@ from ..BobTool import *
 
 
 class MultipleActionTool(BobTool, ABC):
+    """
+    Tool that can have many buttons. The UI and the actions are customizable.
+    Example :
+    {
+        "action_1": {
+            "text": "Action 1",                 # Text of the button
+            "action": self.__some_function_1,   # Function executed on button pressed
+            "row": 0                            # Index of the row
+        },
+        "action_2": {
+            "text": "Action 2",
+            "action": self.__some_function_2,
+            "row": 1
+        },
+        "action_3": {
+            "text": "Action 3",
+            "action": self.__some_function_3
+        },
+        "action_4": {
+            "text": "Action 4",
+            "action": self.__some_function_4,
+            "row": 1,
+            "stretch": 2                        # Specify the stretch if the button should be wider/thinner
+        }
+    }
+    """
     def __init__(self, name, pref_name, actions, stretch=0, tooltip=""):
+        """
+        Constructor
+        :param name
+        :param pref_name
+        :param actions (see above)
+        :param stretch: default stretch
+        :param tooltip
+        """
         super().__init__(name, pref_name, tooltip)
         self._actions = actions
         self.__row = 0
@@ -12,9 +46,26 @@ class MultipleActionTool(BobTool, ABC):
                 self.__row = max(self.__row, action["row"])
 
     def _add_ui_before_buttons(self, lyt):
+        """
+        Function if the tool should have additionnal UI before the buttons
+        :param lyt: layout
+        :return:
+        """
+        pass
+
+    def _add_ui_after_buttons(self, lyt):
+        """
+        Function if the tool should have additionnal UI after the buttons
+        :param lyt: layout
+        :return:
+        """
         pass
 
     def populate(self):
+        """
+        Populate the MultipleActionTool
+        :return:
+        """
         layout = super(MultipleActionTool, self).populate()
         # Get the collapsible widget (the only widget of the layout)
         collapsible = layout.itemAt(0).widget()
@@ -43,4 +94,6 @@ class MultipleActionTool(BobTool, ABC):
             if stretch > 0:
                 action_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
             layouts[row].addWidget(action_btn, stretch)
+
+        self._add_ui_after_buttons(content_layout)
         return layout

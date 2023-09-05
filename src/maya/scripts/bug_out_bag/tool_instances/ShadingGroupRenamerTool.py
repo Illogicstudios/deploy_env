@@ -1,12 +1,16 @@
 from ..tool_models.ActionTool import *
 
 
-class ShadingGroupRenamer(ActionTool):
+class ShadingGroupRenamerTool(ActionTool):
     def __init__(self):
         super().__init__(name="Shading Group Renamer",pref_name="shading_group_renamer",
                          description="Rename Shading Group from Surface Shader", button_text="Rename")
 
     def _action(self):
+        """
+        Rename all the shading groups with a proper name
+        :return:
+        """
         # Get all shading groups in the scene
         shading_groups = pm.ls(type='shadingEngine')
 
@@ -15,12 +19,14 @@ class ShadingGroupRenamer(ActionTool):
             # Find connected surface shader
             surface_shader = sg.surfaceShader.listConnections()
             try:
+                if sg == "initialParticleSE" or sg == "initialShadingGroup":
+                    continue
                 if surface_shader:
                     old_name = sg.name()
                     shader = surface_shader[0]
                     # Rename the shading group based on the surface shader's name
                     new_sg_name = shader.nodeName() + '_SG'
-                    rename(sg, new_sg_name)
+                    pm.rename(sg, new_sg_name)
                     print(f'Renamed {old_name} to {new_sg_name}')
                 else:
                     print(f'Skipping {sg} as no surface shader is connected')

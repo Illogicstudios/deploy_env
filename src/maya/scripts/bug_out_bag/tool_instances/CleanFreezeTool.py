@@ -5,6 +5,10 @@ class CleanFreezeTool(ActionTool):
 
     @staticmethod
     def __get_transforms_selected():
+        """
+        Get all the transform Nodes selected (recursive)
+        :return: transform Nodes selected
+        """
         selection = pm.ls(selection=True, type="transform")
         selection_arr = []
         selection_arr.extend(selection)
@@ -19,6 +23,10 @@ class CleanFreezeTool(ActionTool):
         self.__selection = []
 
     def _action(self):
+        """
+        Action that perform the CleanFreeze process
+        :return:
+        """
         self.__unlock_selection()
         self.__delete_history()
         self.__freeze_transform()
@@ -26,18 +34,34 @@ class CleanFreezeTool(ActionTool):
         self.__lock_selection()
 
     def __freeze_transform(self):
+        """
+        Freeze all the transform selected
+        :return:
+        """
         for item in self.__selection:
             pm.makeIdentity(item["transform"], apply=True)
 
     def __center_pivot(self):
+        """
+        Center the pivot of all transform selected
+        :return:
+        """
         for item in self.__selection:
             pm.xform(item["transform"], pivots=(0, 0, 0), worldSpace=True)
 
     def __delete_history(self):
+        """
+        Delete the history of all the transform selected
+        :return:
+        """
         for item in self.__selection:
             pm.delete(item["transform"], constructionHistory=True)
 
     def __retrieve_selection(self):
+        """
+        Retrieve all the values of transform Nodes selected
+        :return:
+        """
         selection = CleanFreezeTool.__get_transforms_selected()
         self.__selection.clear()
         for transform in selection:
@@ -59,6 +83,10 @@ class CleanFreezeTool(ActionTool):
             self.__selection.append(item)
 
     def __unlock_selection(self):
+        """
+        Unlock all the nodes selected
+        :return:
+        """
         for item in self.__selection:
             transform = item["transform"]
             if item["translate"]: transform.translate.unlock()
@@ -75,6 +103,10 @@ class CleanFreezeTool(ActionTool):
             if item["scaleZ"]: transform.scaleZ.unlock()
 
     def __lock_selection(self):
+        """
+        Lock all the nodes selected
+        :return:
+        """
         for item in self.__selection:
             transform = item["transform"]
             if item["translate"]: transform.translate.lock()
@@ -90,16 +122,26 @@ class CleanFreezeTool(ActionTool):
             if item["scaleY"]: transform.scaleY.lock()
             if item["scaleZ"]: transform.scaleZ.lock()
 
-    # Refresh the button
     def __refresh_btn(self):
+        """
+        Refresh the button
+        :return:
+        """
         self._action_btn.setEnabled(len(self.__selection) > 0)
 
-    # Refresh the button on selection changed
     def on_selection_changed(self):
+        """
+        Refresh the button on selection changed
+        :return:
+        """
         self.__retrieve_selection()
         self.__refresh_btn()
 
     def populate(self):
+        """
+        Populate the CleanFreezeTool UI
+        :return: layout
+        """
         layout = super(CleanFreezeTool, self).populate()
         self.__retrieve_selection()
         self.__refresh_btn()

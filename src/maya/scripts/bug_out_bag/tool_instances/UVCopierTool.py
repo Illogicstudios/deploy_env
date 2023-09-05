@@ -21,6 +21,10 @@ class UVCopierTool(MultipleActionTool):
         self.__selected_shapes = []
 
     def __current_uv_to_default(self):
+        """
+        Set the selected shapes current UV to default
+        :return:
+        """
         for shape in self.__selected_shapes:
             default_uv = pm.getAttr(shape.name() + ".uvSet[0].uvSetName")
             try:
@@ -44,6 +48,10 @@ class UVCopierTool(MultipleActionTool):
                 print("Current UV Set to Default failed on %s" % shape.name())
 
     def __merge_all_uv(self):
+        """
+        Merge UVs of all selected shapes
+        :return:
+        """
         for shape in self.__selected_shapes:
             default_uv = pm.getAttr(shape+".uvSet[0].uvSetName")
             all_uv_sets = pm.polyUVSet(shape, q=1, allUVSets=1)
@@ -57,6 +65,10 @@ class UVCopierTool(MultipleActionTool):
                 pm.polyUVSet(shape, rename=True, newUVSet='map1', uvSet=default_uv)
 
     def __refresh_btn(self):
+        """
+        Refresh the buttons
+        :return:
+        """
         enabled = len(self.__selected_shapes) > 0
         if "button" in self._actions["current_to_default"]:
             self._actions["current_to_default"]["button"].setEnabled(enabled)
@@ -64,15 +76,26 @@ class UVCopierTool(MultipleActionTool):
             self._actions["merge"]["button"].setEnabled(enabled)
 
     def __retrieve_datas(self):
+        """
+        Retrieve the selected shapes (recursive)
+        :return:
+        """
         selection = pm.ls(selection=True)
         self.__selected_shapes = pm.listRelatives(selection, allDescendents=True, shapes=True)
 
-    # Refresh the button on selection changed
     def on_selection_changed(self):
+        """
+        Refresh the button on selection changed
+        :return:
+        """
         self.__retrieve_datas()
         self.__refresh_btn()
 
     def populate(self):
+        """
+        Populate the UVCopierTool UI
+        :return:
+        """
         layout = super(UVCopierTool, self).populate()
         self.__retrieve_datas()
         self.__refresh_btn()

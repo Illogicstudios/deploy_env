@@ -4,10 +4,14 @@ class Header(QtWidgets.QWidget):
     """Header class for collapsible group"""
 
     def __init__(self, name, content_widget,pref_name, prefs,  bg_color, margins):
-        """Header Class Constructor to initialize the object.
-        Args:
-            name (str): Name for the header
-            content_widget (QtWidgets.QWidget): Widget containing child elements
+        """
+        Constructor
+        :param name: Name for the header
+        :param content_widget: Widget containing child elements
+        :param pref_name
+        :param prefs
+        :param bg_color: Color of the background
+        :param margins
         """
         super(Header, self).__init__()
         self.pref_name = pref_name
@@ -51,10 +55,18 @@ class Header(QtWidgets.QWidget):
                 self.collapse()
 
     def mousePressEvent(self, *args):
-        """Handle mouse events, call the function to toggle groups"""
+        """
+        Handle mouse events, call the function to toggle groups
+        :param args
+        :return:
+        """
         self.expand() if not self.content.isVisible() else self.collapse()
 
     def expand(self):
+        """
+        Expand the collapsible widget in the UI
+        :return:
+        """
         self.content.setVisible(True)
         self.icon.setPixmap(self.expand_ico)
         pref = self.prefs[self.pref_name] if self.pref_name in self.prefs else {}
@@ -62,6 +74,10 @@ class Header(QtWidgets.QWidget):
         self.prefs[self.pref_name] = pref
 
     def collapse(self):
+        """
+        Collapse the collapsible widget in the UI
+        :return:
+        """
         self.content.setVisible(False)
         self.icon.setPixmap(self.collapse_ico)
         pref = self.prefs[self.pref_name] if self.pref_name in self.prefs else {}
@@ -81,10 +97,14 @@ class BobCollapsibleWidget(QtWidgets.QWidget):
     """
 
     def __init__(self, name,pref_name,  prefs, bg_color="rgb(60, 60, 60)", widget_color="rgb(93, 93, 93)", margins=None):
-        """CollapsibleLayout Class Constructor to initialize the object
-        Args:
-            name (str): Name for the header
-            color_background (bool): whether or not to color the background lighter like in maya
+        """
+        Constructor
+        :param name: Name for the header
+        :param pref_name
+        :param prefs
+        :param bg_color
+        :param widget_color
+        :param margins
         """
         super(BobCollapsibleWidget, self).__init__()
         if margins is None:
@@ -107,7 +127,8 @@ class BobCollapsibleWidget(QtWidgets.QWidget):
 
     @property
     def contentWidget(self):
-        """Getter for the content widget
+        """
+        Getter for the content widget
         Returns: Content widget
         """
         return self._content_widget

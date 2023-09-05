@@ -14,7 +14,7 @@ from shiboken2 import wrapInstance
 
 # ######################################################################################################################
 
-# name_regexp is used to compare a retrieved colorspace with known olorspaces
+# name_regexp is used to compare a retrieved colorspace with known colorspaces
 # regexps are used to detect a colorspace pattern in a file name
 
 _KNOWN_COLORSPACE = [
@@ -80,8 +80,11 @@ class TextureCheckTool(ActionTool):
         self.__dialog_opened = False
         self.__texture_check_dialog = TextureCheckDialog(self)
 
-    # Launch the Dialog to check textures
     def _action(self):
+        """
+        Launch the Dialog to check textures
+        :return:
+        """
         try:
             self.__texture_check_dialog.hide()
         except RuntimeError:
@@ -90,25 +93,43 @@ class TextureCheckTool(ActionTool):
         self.__texture_check_dialog.refresh_ui()
 
     def populate(self):
+        """
+        Populate the TextureCheckTool UI
+        :return:
+        """
         layout = super(TextureCheckTool, self).populate()
         self.__refresh_btn()
         return layout
 
-    # setter of the state opened
     def set_opened(self, opened):
+        """
+        Setter of the state opened
+        :param opened
+        :return:
+        """
         self.__dialog_opened = opened
         self.__refresh_btn()
 
-    # Refresh the button
     def __refresh_btn(self):
+        """
+        Refresh the button
+        :return:
+        """
         self._action_btn.setEnabled(not self.__dialog_opened and len(pm.ls(type="file")) > 0)
 
-    # Refresh the button on selection changed
     def on_selection_changed(self):
+        """
+        Refresh the button on selection changed
+        :return:
+        """
         self.__refresh_btn()
 
 class TextureCheckDialog(QDialog):
     def __init__(self, tool):
+        """
+        Constructor
+        :param tool:
+        """
         super(TextureCheckDialog, self).__init__(wrapInstance(int(omui.MQtUtil.mainWindow()), QWidget))
         self.__tool = tool
 
@@ -138,48 +159,72 @@ class TextureCheckDialog(QDialog):
         self.__create_ui()
         self.refresh_ui()
 
-    # Refresh the datas and the ui of the filepath corresponding
     def __on_node_changed(self, filepath):
+        """
+        Refresh the datas and the ui of the filepath corresponding
+        :param filepath:
+        :return:
+        """
         self.__clear_script_jobs()
         if filepath in self.__bad_cs_tex:
             self.__bad_cs_tex.pop(filepath)
         self.build_bad_cs_tex(self.__bad_cs_tex, filepath)
         self.refresh_ui()
 
-    # On file node created refresh the datas and the ui of its filepath
     def __on_file_created(self, *args, **kwargs):
+        """
+        On file node created refresh the datas and the ui of its filepath
+        :return:
+        """
         pm.select(OpenMaya.MFnDependencyNode(args[0]).name())
         filepath = pm.ls(selection=True)[0].fileTextureName.get()
         self.__on_node_changed(filepath)
 
-    # On file node deleted refresh the datas and the ui of its filepath
     def __on_file_deleted(self, *args, **kwargs):
+        """
+        On file node deleted refresh the datas and the ui of its filepath
+        :return:
+        """
         pm.select(OpenMaya.MFnDependencyNode(args[0]).name())
         filepath = pm.ls(selection=True)[0].fileTextureName.get()
         self.__on_node_changed(filepath)
 
-    # create the callbacks
     def __create_callback(self):
+        """
+        Create the callbacks
+        :return:
+        """
         self.__node_created_callback = OpenMaya.MDGMessage.addNodeAddedCallback(self.__on_file_created, "file")
         self.__node_deleted_callback = OpenMaya.MDGMessage.addNodeRemovedCallback(self.__on_file_deleted, "file")
 
-    # On show event create the callbacks and initialize some values
     def showEvent(self, arg__1: QtGui.QShowEvent) -> None:
+        """
+        On show event create the callbacks and initialize some values
+        :return:
+        """
         self.__bad_cs_tex = self.build_bad_cs()
         self.__create_callback()
         self.__tool.set_opened(True)
         self.__opened = True
 
-    # On hide event remove callbacks and change some values
     def hideEvent(self, arg__1: QtGui.QCloseEvent) -> None:
+        """
+        On hide event remove callbacks and change some values
+        :return:
+        """
         OpenMaya.MMessage.removeCallback(self.__node_created_callback)
         OpenMaya.MMessage.removeCallback(self.__node_deleted_callback)
         self.__tool.set_opened(False)
         self.__opened = False
         self.__clear_script_jobs()
 
-    # Retrieve colorspaces pattern in a filename
     def __get_detected_colorspace(self, filename, colorspaces=None):
+        """
+        Retrieve colorspaces pattern in a filename
+        :param filename
+        :param colorspaces
+        :return:
+        """
         match = None
         importance = -1
 
@@ -192,8 +237,12 @@ class TextureCheckDialog(QDialog):
                             importance = cs_imp
         return match
 
-    # build datas of bad textures
     def build_bad_cs(self, test_call=False):
+        """
+        Build datas of bad textures
+        :param test_call
+        :return:
+        """
         bad_cs_tex = {}
         textures_file = pm.ls(type="file")
         distinct_filepath = []
@@ -207,8 +256,14 @@ class TextureCheckDialog(QDialog):
 
         return bad_cs_tex
 
-    # build datas of bad textures for a filepath
     def build_bad_cs_tex(self, bad_cs_tex, filepath, test_call=False):
+        """
+        Build datas of bad textures for a filepath
+        :param bad_cs_tex
+        :param filepath
+        :param test_call: If not test call then scriptJob must be created
+        :return:
+        """
         textures_file = pm.ls(type="file")
 
         # Initiate all the known colorspaces fields in the dict
@@ -252,21 +307,30 @@ class TextureCheckDialog(QDialog):
             if nb_different_cs < 2 and length_unknown < 1:
                 bad_cs_tex.pop(filepath)
 
-    # Clear all script jobs linked to filenode
     def __clear_script_jobs(self):
+        """
+        Clear all script jobs linked to filenode
+        :return:
+        """
         for sj in self.__script_jobs:
             pm.evalDeferred(partial(pm.scriptJob, kill=sj, force=True))
         self.__script_jobs.clear()
 
-    # Select the filenodes corresponding to the row in table
     def __on_selection_table_changed(self):
+        """
+        Select the filenodes corresponding to the row in table
+        :return:
+        """
         selection = []
         for s in self.__ui_file_cs_table.selectionModel().selectedRows():
             selection.extend(self.__ui_file_cs_table.item(s.row(), 0).data(Qt.UserRole))
         pm.select(selection)
 
-    # Create the ui
     def __create_ui(self):
+        """
+        Create the ui
+        :return:
+        """
         # Reinit attributes of the UI
         self.setMinimumSize(self.__ui_min_width, self.__ui_min_height)
         self.resize(self.__ui_width, self.__ui_height)
@@ -297,8 +361,11 @@ class TextureCheckDialog(QDialog):
         self.__ui_submit_btn.clicked.connect(self.__submit_cs_choices)
         main_lyt.addWidget(self.__ui_submit_btn)
 
-    # Refresh the ui according to the model attribute
     def refresh_ui(self):
+        """
+        Refresh the ui according to the model attribute
+        :return:
+        """
         if not self.__opened:
             return
 
@@ -367,8 +434,13 @@ class TextureCheckDialog(QDialog):
             row_index += 1
             self.__refresh_button(filepath)
 
-    # toggle the state of buttons in data
     def __on_click_button(self, filepath, colorspace):
+        """
+        Toggle the state of buttons in data
+        :param filepath
+        :param colorspace
+        :return:
+        """
         if not self.__bad_cs_tex[filepath]["colorspaces"][colorspace]["state"]:
             for cs in self.__bad_cs_tex[filepath]["colorspaces"].keys():
                 self.__bad_cs_tex[filepath]["colorspaces"][cs]["state"] = False
@@ -376,8 +448,12 @@ class TextureCheckDialog(QDialog):
             self.__bad_cs_tex[filepath]["colorspaces"][colorspace]["state"]
         self.__refresh_button(filepath)
 
-    # Refresh a button according to its state and its stylesheet
     def __refresh_button(self, filepath):
+        """
+        Refresh a button according to its state and its stylesheet
+        :param filepath
+        :return:
+        """
         for cs in self.__bad_cs_tex[filepath]["colorspaces"].keys():
             cs_datas = self.__bad_cs_tex[filepath]["colorspaces"][cs]
             button_data = cs_datas["button"]
@@ -386,8 +462,11 @@ class TextureCheckDialog(QDialog):
             stylesheet = button_data["stylesheet"]
             btn.setStyleSheet(stylesheet["enabled" if state else "disabled"])
 
-    # Assign the chosen colorspaces
     def __submit_cs_choices(self):
+        """
+        Assign the chosen colorspaces
+        :return:
+        """
         filepath_data_to_build = []
         for filepath, cs_tex_datas in self.__bad_cs_tex.items():
             colorspace = None
