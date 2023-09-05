@@ -82,16 +82,17 @@ class TraceSetTool(MultipleActionTool):
 
                 # Step 3: Set the trace set name to the trace_sets attribute of the shape of the objects in the geo set
                 for obj in geo_set:
-                    obj_shape = pm.PyNode(obj).getShape()
-                    if obj_shape:
-                        if pm.attributeQuery('trace_sets', node=obj_shape, exists=True):
-                            pm.setAttr(f'{obj_shape}.trace_sets', trace_set_name, type='string')
-                        else:
-                            pm.warning(f"The attribute 'trace_sets' does not exist on {obj_shape}")
+                    obj_shapes = TraceSetTool.__get_all_shapes(obj)
+                    for obj_shape in obj_shapes:
+                        if obj_shape:
+                            if pm.attributeQuery('trace_sets', node=obj_shape, exists=True):
+                                pm.setAttr(f'{obj_shape}.trace_sets', trace_set_name, type='string')
+                            else:
+                                pm.warning(f"The attribute 'trace_sets' does not exist on {obj_shape}")
 
                 # Step 4: For the shaders of objects in the shading group set, create or update a trace set node between the shader and the shading group
                 for obj in shading_group_set:
-                    shading_grps = pm.listConnections(pm.PyNode(obj).getShape(), type='shadingEngine')
+                    shading_grps = pm.listConnections(TraceSetTool.__get_all_shapes(obj), type='shadingEngine')
                     if shading_grps:
                         for shading_grp in shading_grps:
                             try:
@@ -116,6 +117,13 @@ class TraceSetTool(MultipleActionTool):
         else:
             pm.warning("Invalid sets specified. Please check the set names and try again.")
 
+    @staticmethod
+    def __get_all_shapes(node):
+        shapes = []
+        for child in node.listRelatives(ad=True):
+            if child.type() == 'mesh':
+                shapes.append(child)
+        return shapes
 
     def populate(self):
         """
